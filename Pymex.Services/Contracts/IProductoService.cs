@@ -11,7 +11,8 @@ namespace Pymex.Services.Contracts
     [ServiceContract]
     public interface IProductoService : IGenericService<ProductoDC>
     {
-
+        [OperationContract]
+        ResponseWithDataDataContract<ProductoDC> ObtenerPorCodigo(string codigo);
     }
 
     [DataContract]
