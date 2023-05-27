@@ -153,18 +153,6 @@
           <Property Name="FechaModificacion" Type="datetime" />
           <Property Name="UltimoUsuarioModifico" Type="nvarchar" MaxLength="30" />
         </EntityType>
-        <Association Name="FK__Entrada__Proveed__4C6B5938">
-          <End Role="Proveedor" Type="Self.Proveedor" Multiplicity="1" />
-          <End Role="Entrada" Type="Self.Entrada" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Proveedor">
-              <PropertyRef Name="ProveedorID" />
-            </Principal>
-            <Dependent Role="Entrada">
-              <PropertyRef Name="ProveedorID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__EntradaPr__Entra__503BEA1C">
           <End Role="Entrada" Type="Self.Entrada" Multiplicity="1" />
           <End Role="EntradaProducto" Type="Self.EntradaProducto" Multiplicity="*" />
@@ -174,18 +162,6 @@
             </Principal>
             <Dependent Role="EntradaProducto">
               <PropertyRef Name="EntradaID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__EntradaPr__Produ__51300E55">
-          <End Role="Producto" Type="Self.Producto" Multiplicity="1" />
-          <End Role="EntradaProducto" Type="Self.EntradaProducto" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Producto">
-              <PropertyRef Name="ProductoID" />
-            </Principal>
-            <Dependent Role="EntradaProducto">
-              <PropertyRef Name="ProductoID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -234,30 +210,6 @@
             </Principal>
             <Dependent Role="Producto">
               <PropertyRef Name="CategoriaID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Salida__ClienteI__43D61337">
-          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
-          <End Role="Salida" Type="Self.Salida" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cliente">
-              <PropertyRef Name="ClienteID" />
-            </Principal>
-            <Dependent Role="Salida">
-              <PropertyRef Name="ClienteID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__SalidaPro__Produ__489AC854">
-          <End Role="Producto" Type="Self.Producto" Multiplicity="1" />
-          <End Role="SalidaProducto" Type="Self.SalidaProducto" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Producto">
-              <PropertyRef Name="ProductoID" />
-            </Principal>
-            <Dependent Role="SalidaProducto">
-              <PropertyRef Name="ProductoID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -320,16 +272,8 @@
           <EntitySet Name="Almacen" EntityType="Self.Almacen" Schema="productos" store:Type="Tables" />
           <EntitySet Name="Categoria" EntityType="Self.Categoria" Schema="productos" store:Type="Tables" />
           <EntitySet Name="Producto" EntityType="Self.Producto" Schema="productos" store:Type="Tables" />
-          <AssociationSet Name="FK__Entrada__Proveed__4C6B5938" Association="Self.FK__Entrada__Proveed__4C6B5938">
-            <End Role="Proveedor" EntitySet="Proveedor" />
-            <End Role="Entrada" EntitySet="Entrada" />
-          </AssociationSet>
           <AssociationSet Name="FK__EntradaPr__Entra__503BEA1C" Association="Self.FK__EntradaPr__Entra__503BEA1C">
             <End Role="Entrada" EntitySet="Entrada" />
-            <End Role="EntradaProducto" EntitySet="EntradaProducto" />
-          </AssociationSet>
-          <AssociationSet Name="FK__EntradaPr__Produ__51300E55" Association="Self.FK__EntradaPr__Produ__51300E55">
-            <End Role="Producto" EntitySet="Producto" />
             <End Role="EntradaProducto" EntitySet="EntradaProducto" />
           </AssociationSet>
           <AssociationSet Name="FK__PerfilPer__Perfi__3C69FB99" Association="Self.FK__PerfilPer__Perfi__3C69FB99">
@@ -347,14 +291,6 @@
           <AssociationSet Name="FK__Producto__Catego__5441852A" Association="Self.FK__Producto__Catego__5441852A">
             <End Role="Categoria" EntitySet="Categoria" />
             <End Role="Producto" EntitySet="Producto" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Salida__ClienteI__43D61337" Association="Self.FK__Salida__ClienteI__43D61337">
-            <End Role="Cliente" EntitySet="Cliente" />
-            <End Role="Salida" EntitySet="Salida" />
-          </AssociationSet>
-          <AssociationSet Name="FK__SalidaPro__Produ__489AC854" Association="Self.FK__SalidaPro__Produ__489AC854">
-            <End Role="Producto" EntitySet="Producto" />
-            <End Role="SalidaProducto" EntitySet="SalidaProducto" />
           </AssociationSet>
           <AssociationSet Name="FK__SalidaPro__Salid__47A6A41B" Association="Self.FK__SalidaPro__Salid__47A6A41B">
             <End Role="Salida" EntitySet="Salida" />

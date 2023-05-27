@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Pymex.Services.ValueObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -7,11 +8,20 @@ using System.Text;
 
 namespace Pymex.Services.Contracts
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IClienteService" in both code and config file together.
     [ServiceContract]
-    public interface IClienteService
+    public interface IClienteService : IGenericService<ClienteDC>
     {
-        [OperationContract]
-        void DoWork();
+
+    }
+
+    [DataContract]
+    public class ClienteDC
+    {
+        [DataMember] public int Id { get; set; }
+        [DataMember] public TipoDocumento TipoDocumento { get; set; }
+        [DataMember] public string NumeroDocumento { get; set; }
+        [DataMember] public string NombreCompleto { get; set; }
+        [DataMember] public DateTime FechaRegistro { get; set; }
+        [DataMember] public string UsuarioAccion { get; set; }
     }
 }
