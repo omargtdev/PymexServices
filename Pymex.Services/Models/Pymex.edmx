@@ -1,0 +1,929 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PymexModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Sistema">
+          <Key>
+            <PropertyRef Name="SistemaID" />
+          </Key>
+          <Property Name="SistemaID" Type="int" Nullable="false" />
+          <Property Name="RazonSocial" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="RUC" Type="char" MaxLength="11" Nullable="false" />
+          <Property Name="Direccion" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Logo" Type="image" />
+        </EntityType>
+        <EntityType Name="Perfil">
+          <Key>
+            <PropertyRef Name="PerfilID" />
+          </Key>
+          <Property Name="PerfilID" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PerfilPermiso">
+          <Key>
+            <PropertyRef Name="PermisoID" />
+            <PropertyRef Name="PerfilID" />
+          </Key>
+          <Property Name="PermisoID" Type="smallint" Nullable="false" />
+          <Property Name="PerfilID" Type="smallint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Permiso">
+          <Key>
+            <PropertyRef Name="PermisoID" />
+          </Key>
+          <Property Name="PermisoID" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="UsuarioID" />
+          </Key>
+          <Property Name="UsuarioID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UsuarioLogin" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Clave" Type="varbinary(max)" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Apellidos" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="PerfilID" Type="smallint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Entrada">
+          <Key>
+            <PropertyRef Name="EntradaID" />
+          </Key>
+          <Property Name="EntradaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Codigo" Type="char" MaxLength="8" Nullable="false" />
+          <Property Name="FechaRegistro" Type="date" Nullable="false" />
+          <Property Name="ProveedorID" Type="int" Nullable="false" />
+          <Property Name="UsuarioRegistro" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="FechaHoraRegistro" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EntradaProducto">
+          <Key>
+            <PropertyRef Name="EntradaProductoID" />
+            <PropertyRef Name="EntradaID" />
+          </Key>
+          <Property Name="EntradaProductoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EntradaID" Type="int" Nullable="false" />
+          <Property Name="ProductoID" Type="int" Nullable="false" />
+          <Property Name="PrecioCompraUnidad" Type="money" Nullable="false" />
+          <Property Name="PrecioVentaUnidad" Type="money" Nullable="false" />
+          <Property Name="Cantidad" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Salida">
+          <Key>
+            <PropertyRef Name="SalidaID" />
+          </Key>
+          <Property Name="SalidaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Codigo" Type="char" MaxLength="8" Nullable="false" />
+          <Property Name="FechaRegistro" Type="date" Nullable="false" />
+          <Property Name="ClienteID" Type="int" Nullable="false" />
+          <Property Name="UsuarioRegistro" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="FechaHoraRegistro" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SalidaProducto">
+          <Key>
+            <PropertyRef Name="SalidaProductoID" />
+            <PropertyRef Name="SalidaID" />
+          </Key>
+          <Property Name="SalidaProductoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SalidaID" Type="int" Nullable="false" />
+          <Property Name="ProductoID" Type="int" Nullable="false" />
+          <Property Name="PrecioVentaUnidad" Type="money" Nullable="false" />
+          <Property Name="Cantidad" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="ClienteID" />
+          </Key>
+          <Property Name="ClienteID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TipoDocumento" Type="tinyint" Nullable="false" />
+          <Property Name="NumeroDocumento" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="NombreCompleto" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioRegistro" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="FechaModificacion" Type="datetime" />
+          <Property Name="UltimoUsuarioModifico" Type="nvarchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="Proveedor">
+          <Key>
+            <PropertyRef Name="ProveedorID" />
+          </Key>
+          <Property Name="ProveedorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TipoDocumento" Type="tinyint" Nullable="false" />
+          <Property Name="NumeroDocumento" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="NombreCompleto" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioRegistro" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="FechaModificacion" Type="datetime" />
+          <Property Name="UltimoUsuarioModifico" Type="nvarchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="Almacen">
+          <Key>
+            <PropertyRef Name="AlmacenID" />
+          </Key>
+          <Property Name="AlmacenID" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Direccion" Type="varchar" MaxLength="200" />
+          <Property Name="Telefono" Type="varchar" MaxLength="15" />
+          <Property Name="UsuarioResponsable" Type="nvarchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="Categoria">
+          <Key>
+            <PropertyRef Name="CategoriaID" />
+          </Key>
+          <Property Name="CategoriaID" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Producto">
+          <Key>
+            <PropertyRef Name="ProductoID" />
+          </Key>
+          <Property Name="ProductoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Codigo" Type="char" MaxLength="8" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CategoriaID" Type="smallint" Nullable="false" />
+          <Property Name="AlmacenID" Type="smallint" Nullable="false" />
+          <Property Name="UltimoPrecioCompra" Type="money" />
+          <Property Name="UltimoPrecioVenta" Type="money" />
+          <Property Name="Stock" Type="int" />
+          <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioRegistro" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="FechaModificacion" Type="datetime" />
+          <Property Name="UltimoUsuarioModifico" Type="nvarchar" MaxLength="30" />
+        </EntityType>
+        <Association Name="FK__Entrada__Proveed__4C6B5938">
+          <End Role="Proveedor" Type="Self.Proveedor" Multiplicity="1" />
+          <End Role="Entrada" Type="Self.Entrada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proveedor">
+              <PropertyRef Name="ProveedorID" />
+            </Principal>
+            <Dependent Role="Entrada">
+              <PropertyRef Name="ProveedorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EntradaPr__Entra__503BEA1C">
+          <End Role="Entrada" Type="Self.Entrada" Multiplicity="1" />
+          <End Role="EntradaProducto" Type="Self.EntradaProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Entrada">
+              <PropertyRef Name="EntradaID" />
+            </Principal>
+            <Dependent Role="EntradaProducto">
+              <PropertyRef Name="EntradaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EntradaPr__Produ__51300E55">
+          <End Role="Producto" Type="Self.Producto" Multiplicity="1" />
+          <End Role="EntradaProducto" Type="Self.EntradaProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="ProductoID" />
+            </Principal>
+            <Dependent Role="EntradaProducto">
+              <PropertyRef Name="ProductoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PerfilPer__Perfi__3C69FB99">
+          <End Role="Perfil" Type="Self.Perfil" Multiplicity="1" />
+          <End Role="PerfilPermiso" Type="Self.PerfilPermiso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Perfil">
+              <PropertyRef Name="PerfilID" />
+            </Principal>
+            <Dependent Role="PerfilPermiso">
+              <PropertyRef Name="PerfilID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PerfilPer__Permi__3B75D760">
+          <End Role="Permiso" Type="Self.Permiso" Multiplicity="1" />
+          <End Role="PerfilPermiso" Type="Self.PerfilPermiso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permiso">
+              <PropertyRef Name="PermisoID" />
+            </Principal>
+            <Dependent Role="PerfilPermiso">
+              <PropertyRef Name="PermisoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Producto__Almace__5535A963">
+          <End Role="Almacen" Type="Self.Almacen" Multiplicity="1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Almacen">
+              <PropertyRef Name="AlmacenID" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="AlmacenID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Producto__Catego__5441852A">
+          <End Role="Categoria" Type="Self.Categoria" Multiplicity="1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categoria">
+              <PropertyRef Name="CategoriaID" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="CategoriaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Salida__ClienteI__43D61337">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="Salida" Type="Self.Salida" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="ClienteID" />
+            </Principal>
+            <Dependent Role="Salida">
+              <PropertyRef Name="ClienteID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SalidaPro__Produ__489AC854">
+          <End Role="Producto" Type="Self.Producto" Multiplicity="1" />
+          <End Role="SalidaProducto" Type="Self.SalidaProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="ProductoID" />
+            </Principal>
+            <Dependent Role="SalidaProducto">
+              <PropertyRef Name="ProductoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SalidaPro__Salid__47A6A41B">
+          <End Role="Salida" Type="Self.Salida" Multiplicity="1" />
+          <End Role="SalidaProducto" Type="Self.SalidaProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Salida">
+              <PropertyRef Name="SalidaID" />
+            </Principal>
+            <Dependent Role="SalidaProducto">
+              <PropertyRef Name="SalidaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Usuario__PerfilI__57DD0BE4">
+          <End Role="Perfil" Type="Self.Perfil" Multiplicity="1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Perfil">
+              <PropertyRef Name="PerfilID" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="PerfilID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="fn_GenerarCodigo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="inventarios" ReturnType="char">
+          <Parameter Name="letraInicial" Type="char" Mode="In" />
+          <Parameter Name="numero" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_ObtenerResumen" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="inventarios">
+          <Parameter Name="fechaInicio" Type="date" Mode="In" />
+          <Parameter Name="fechaFin" Type="date" Mode="In" />
+        </Function>
+        <Function Name="usp_RegistrarEntrada" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="inventarios">
+          <Parameter Name="fechaRegistro" Type="date" Mode="In" />
+          <Parameter Name="usuarioRegistro" Type="nvarchar" Mode="In" />
+          <Parameter Name="proveedorId" Type="int" Mode="In" />
+          <Parameter Name="productos" Type="xml" Mode="In" />
+        </Function>
+        <Function Name="usp_RegistrarSalida" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="inventarios">
+          <Parameter Name="fechaRegistro" Type="date" Mode="In" />
+          <Parameter Name="usuarioRegistro" Type="nvarchar" Mode="In" />
+          <Parameter Name="clienteId" Type="int" Mode="In" />
+          <Parameter Name="productos" Type="xml" Mode="In" />
+        </Function>
+        <EntityContainer Name="PymexModelStoreContainer">
+          <EntitySet Name="Sistema" EntityType="Self.Sistema" Schema="configuraciones" store:Type="Tables" />
+          <EntitySet Name="Perfil" EntityType="Self.Perfil" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PerfilPermiso" EntityType="Self.PerfilPermiso" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Permiso" EntityType="Self.Permiso" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Entrada" EntityType="Self.Entrada" Schema="inventarios" store:Type="Tables" />
+          <EntitySet Name="EntradaProducto" EntityType="Self.EntradaProducto" Schema="inventarios" store:Type="Tables" />
+          <EntitySet Name="Salida" EntityType="Self.Salida" Schema="inventarios" store:Type="Tables" />
+          <EntitySet Name="SalidaProducto" EntityType="Self.SalidaProducto" Schema="inventarios" store:Type="Tables" />
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" Schema="personas" store:Type="Tables" />
+          <EntitySet Name="Proveedor" EntityType="Self.Proveedor" Schema="personas" store:Type="Tables" />
+          <EntitySet Name="Almacen" EntityType="Self.Almacen" Schema="productos" store:Type="Tables" />
+          <EntitySet Name="Categoria" EntityType="Self.Categoria" Schema="productos" store:Type="Tables" />
+          <EntitySet Name="Producto" EntityType="Self.Producto" Schema="productos" store:Type="Tables" />
+          <AssociationSet Name="FK__Entrada__Proveed__4C6B5938" Association="Self.FK__Entrada__Proveed__4C6B5938">
+            <End Role="Proveedor" EntitySet="Proveedor" />
+            <End Role="Entrada" EntitySet="Entrada" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EntradaPr__Entra__503BEA1C" Association="Self.FK__EntradaPr__Entra__503BEA1C">
+            <End Role="Entrada" EntitySet="Entrada" />
+            <End Role="EntradaProducto" EntitySet="EntradaProducto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EntradaPr__Produ__51300E55" Association="Self.FK__EntradaPr__Produ__51300E55">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="EntradaProducto" EntitySet="EntradaProducto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PerfilPer__Perfi__3C69FB99" Association="Self.FK__PerfilPer__Perfi__3C69FB99">
+            <End Role="Perfil" EntitySet="Perfil" />
+            <End Role="PerfilPermiso" EntitySet="PerfilPermiso" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PerfilPer__Permi__3B75D760" Association="Self.FK__PerfilPer__Permi__3B75D760">
+            <End Role="Permiso" EntitySet="Permiso" />
+            <End Role="PerfilPermiso" EntitySet="PerfilPermiso" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Producto__Almace__5535A963" Association="Self.FK__Producto__Almace__5535A963">
+            <End Role="Almacen" EntitySet="Almacen" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Producto__Catego__5441852A" Association="Self.FK__Producto__Catego__5441852A">
+            <End Role="Categoria" EntitySet="Categoria" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Salida__ClienteI__43D61337" Association="Self.FK__Salida__ClienteI__43D61337">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Salida" EntitySet="Salida" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SalidaPro__Produ__489AC854" Association="Self.FK__SalidaPro__Produ__489AC854">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="SalidaProducto" EntitySet="SalidaProducto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SalidaPro__Salid__47A6A41B" Association="Self.FK__SalidaPro__Salid__47A6A41B">
+            <End Role="Salida" EntitySet="Salida" />
+            <End Role="SalidaProducto" EntitySet="SalidaProducto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Usuario__PerfilI__57DD0BE4" Association="Self.FK__Usuario__PerfilI__57DD0BE4">
+            <End Role="Perfil" EntitySet="Perfil" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PymexModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Sistema">
+          <Key>
+            <PropertyRef Name="SistemaID" />
+          </Key>
+          <Property Name="SistemaID" Type="Int32" Nullable="false" />
+          <Property Name="RazonSocial" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RUC" Type="String" MaxLength="11" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Direccion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Logo" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Perfil">
+          <Key>
+            <PropertyRef Name="PerfilID" />
+          </Key>
+          <Property Name="PerfilID" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__Usuario__PerfilI__57DD0BE4" FromRole="Perfil" ToRole="Usuario" />
+          <NavigationProperty Name="Permiso" Relationship="Self.PerfilPermiso" FromRole="Perfil" ToRole="Permiso" />
+        </EntityType>
+        <EntityType Name="Permiso">
+          <Key>
+            <PropertyRef Name="PermisoID" />
+          </Key>
+          <Property Name="PermisoID" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Perfil" Relationship="Self.PerfilPermiso" FromRole="Permiso" ToRole="Perfil" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="UsuarioID" />
+          </Key>
+          <Property Name="UsuarioID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UsuarioLogin" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Clave" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Apellidos" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PerfilID" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="Perfil" Relationship="Self.FK__Usuario__PerfilI__57DD0BE4" FromRole="Usuario" ToRole="Perfil" />
+        </EntityType>
+        <EntityType Name="Entrada">
+          <Key>
+            <PropertyRef Name="EntradaID" />
+          </Key>
+          <Property Name="EntradaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Codigo" Type="String" MaxLength="8" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ProveedorID" Type="Int32" Nullable="false" />
+          <Property Name="UsuarioRegistro" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FechaHoraRegistro" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Proveedor" Relationship="Self.FK__Entrada__Proveed__4C6B5938" FromRole="Entrada" ToRole="Proveedor" />
+          <NavigationProperty Name="EntradaProducto" Relationship="Self.FK__EntradaPr__Entra__503BEA1C" FromRole="Entrada" ToRole="EntradaProducto" />
+        </EntityType>
+        <EntityType Name="EntradaProducto">
+          <Key>
+            <PropertyRef Name="EntradaProductoID" />
+            <PropertyRef Name="EntradaID" />
+          </Key>
+          <Property Name="EntradaProductoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EntradaID" Type="Int32" Nullable="false" />
+          <Property Name="ProductoID" Type="Int32" Nullable="false" />
+          <Property Name="PrecioCompraUnidad" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="PrecioVentaUnidad" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Cantidad" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Entrada" Relationship="Self.FK__EntradaPr__Entra__503BEA1C" FromRole="EntradaProducto" ToRole="Entrada" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK__EntradaPr__Produ__51300E55" FromRole="EntradaProducto" ToRole="Producto" />
+        </EntityType>
+        <EntityType Name="Salida">
+          <Key>
+            <PropertyRef Name="SalidaID" />
+          </Key>
+          <Property Name="SalidaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Codigo" Type="String" MaxLength="8" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ClienteID" Type="Int32" Nullable="false" />
+          <Property Name="UsuarioRegistro" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FechaHoraRegistro" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Cliente" Relationship="Self.FK__Salida__ClienteI__43D61337" FromRole="Salida" ToRole="Cliente" />
+          <NavigationProperty Name="SalidaProducto" Relationship="Self.FK__SalidaPro__Salid__47A6A41B" FromRole="Salida" ToRole="SalidaProducto" />
+        </EntityType>
+        <EntityType Name="SalidaProducto">
+          <Key>
+            <PropertyRef Name="SalidaProductoID" />
+            <PropertyRef Name="SalidaID" />
+          </Key>
+          <Property Name="SalidaProductoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SalidaID" Type="Int32" Nullable="false" />
+          <Property Name="ProductoID" Type="Int32" Nullable="false" />
+          <Property Name="PrecioVentaUnidad" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Cantidad" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Salida" Relationship="Self.FK__SalidaPro__Salid__47A6A41B" FromRole="SalidaProducto" ToRole="Salida" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK__SalidaPro__Produ__489AC854" FromRole="SalidaProducto" ToRole="Producto" />
+        </EntityType>
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="ClienteID" />
+          </Key>
+          <Property Name="ClienteID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TipoDocumento" Type="Byte" Nullable="false" />
+          <Property Name="NumeroDocumento" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NombreCompleto" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioRegistro" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Precision="3" />
+          <Property Name="UltimoUsuarioModifico" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Salida" Relationship="Self.FK__Salida__ClienteI__43D61337" FromRole="Cliente" ToRole="Salida" />
+        </EntityType>
+        <EntityType Name="Proveedor">
+          <Key>
+            <PropertyRef Name="ProveedorID" />
+          </Key>
+          <Property Name="ProveedorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TipoDocumento" Type="Byte" Nullable="false" />
+          <Property Name="NumeroDocumento" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NombreCompleto" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioRegistro" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Precision="3" />
+          <Property Name="UltimoUsuarioModifico" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Entrada" Relationship="Self.FK__Entrada__Proveed__4C6B5938" FromRole="Proveedor" ToRole="Entrada" />
+        </EntityType>
+        <EntityType Name="Almacen">
+          <Key>
+            <PropertyRef Name="AlmacenID" />
+          </Key>
+          <Property Name="AlmacenID" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Direccion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Telefono" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="UsuarioResponsable" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK__Producto__Almace__5535A963" FromRole="Almacen" ToRole="Producto" />
+        </EntityType>
+        <EntityType Name="Categoria">
+          <Key>
+            <PropertyRef Name="CategoriaID" />
+          </Key>
+          <Property Name="CategoriaID" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK__Producto__Catego__5441852A" FromRole="Categoria" ToRole="Producto" />
+        </EntityType>
+        <EntityType Name="Producto">
+          <Key>
+            <PropertyRef Name="ProductoID" />
+          </Key>
+          <Property Name="ProductoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Codigo" Type="String" MaxLength="8" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CategoriaID" Type="Int16" Nullable="false" />
+          <Property Name="AlmacenID" Type="Int16" Nullable="false" />
+          <Property Name="UltimoPrecioCompra" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="UltimoPrecioVenta" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Stock" Type="Int32" />
+          <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioRegistro" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Precision="3" />
+          <Property Name="UltimoUsuarioModifico" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="EntradaProducto" Relationship="Self.FK__EntradaPr__Produ__51300E55" FromRole="Producto" ToRole="EntradaProducto" />
+          <NavigationProperty Name="SalidaProducto" Relationship="Self.FK__SalidaPro__Produ__489AC854" FromRole="Producto" ToRole="SalidaProducto" />
+          <NavigationProperty Name="Almacen" Relationship="Self.FK__Producto__Almace__5535A963" FromRole="Producto" ToRole="Almacen" />
+          <NavigationProperty Name="Categoria" Relationship="Self.FK__Producto__Catego__5441852A" FromRole="Producto" ToRole="Categoria" />
+        </EntityType>
+        <Association Name="FK__Usuario__PerfilI__57DD0BE4">
+          <End Role="Perfil" Type="Self.Perfil" Multiplicity="1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Perfil">
+              <PropertyRef Name="PerfilID" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="PerfilID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Entrada__Proveed__4C6B5938">
+          <End Role="Proveedor" Type="Self.Proveedor" Multiplicity="1" />
+          <End Role="Entrada" Type="Self.Entrada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proveedor">
+              <PropertyRef Name="ProveedorID" />
+            </Principal>
+            <Dependent Role="Entrada">
+              <PropertyRef Name="ProveedorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EntradaPr__Entra__503BEA1C">
+          <End Role="Entrada" Type="Self.Entrada" Multiplicity="1" />
+          <End Role="EntradaProducto" Type="Self.EntradaProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Entrada">
+              <PropertyRef Name="EntradaID" />
+            </Principal>
+            <Dependent Role="EntradaProducto">
+              <PropertyRef Name="EntradaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EntradaPr__Produ__51300E55">
+          <End Role="Producto" Type="Self.Producto" Multiplicity="1" />
+          <End Role="EntradaProducto" Type="Self.EntradaProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="ProductoID" />
+            </Principal>
+            <Dependent Role="EntradaProducto">
+              <PropertyRef Name="ProductoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Salida__ClienteI__43D61337">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="Salida" Type="Self.Salida" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="ClienteID" />
+            </Principal>
+            <Dependent Role="Salida">
+              <PropertyRef Name="ClienteID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SalidaPro__Salid__47A6A41B">
+          <End Role="Salida" Type="Self.Salida" Multiplicity="1" />
+          <End Role="SalidaProducto" Type="Self.SalidaProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Salida">
+              <PropertyRef Name="SalidaID" />
+            </Principal>
+            <Dependent Role="SalidaProducto">
+              <PropertyRef Name="SalidaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SalidaPro__Produ__489AC854">
+          <End Role="Producto" Type="Self.Producto" Multiplicity="1" />
+          <End Role="SalidaProducto" Type="Self.SalidaProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="ProductoID" />
+            </Principal>
+            <Dependent Role="SalidaProducto">
+              <PropertyRef Name="ProductoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Producto__Almace__5535A963">
+          <End Role="Almacen" Type="Self.Almacen" Multiplicity="1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Almacen">
+              <PropertyRef Name="AlmacenID" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="AlmacenID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Producto__Catego__5441852A">
+          <End Role="Categoria" Type="Self.Categoria" Multiplicity="1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categoria">
+              <PropertyRef Name="CategoriaID" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="CategoriaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PerfilPermiso">
+          <End Role="Perfil" Type="Self.Perfil" Multiplicity="*" />
+          <End Role="Permiso" Type="Self.Permiso" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="PymexEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Sistema" EntityType="Self.Sistema" />
+          <EntitySet Name="Perfil" EntityType="Self.Perfil" />
+          <EntitySet Name="Permiso" EntityType="Self.Permiso" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" />
+          <EntitySet Name="Entrada" EntityType="Self.Entrada" />
+          <EntitySet Name="EntradaProducto" EntityType="Self.EntradaProducto" />
+          <EntitySet Name="Salida" EntityType="Self.Salida" />
+          <EntitySet Name="SalidaProducto" EntityType="Self.SalidaProducto" />
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" />
+          <EntitySet Name="Proveedor" EntityType="Self.Proveedor" />
+          <EntitySet Name="Almacen" EntityType="Self.Almacen" />
+          <EntitySet Name="Categoria" EntityType="Self.Categoria" />
+          <EntitySet Name="Producto" EntityType="Self.Producto" />
+          <AssociationSet Name="FK__Usuario__PerfilI__57DD0BE4" Association="Self.FK__Usuario__PerfilI__57DD0BE4">
+            <End Role="Perfil" EntitySet="Perfil" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Entrada__Proveed__4C6B5938" Association="Self.FK__Entrada__Proveed__4C6B5938">
+            <End Role="Proveedor" EntitySet="Proveedor" />
+            <End Role="Entrada" EntitySet="Entrada" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EntradaPr__Entra__503BEA1C" Association="Self.FK__EntradaPr__Entra__503BEA1C">
+            <End Role="Entrada" EntitySet="Entrada" />
+            <End Role="EntradaProducto" EntitySet="EntradaProducto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EntradaPr__Produ__51300E55" Association="Self.FK__EntradaPr__Produ__51300E55">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="EntradaProducto" EntitySet="EntradaProducto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Salida__ClienteI__43D61337" Association="Self.FK__Salida__ClienteI__43D61337">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Salida" EntitySet="Salida" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SalidaPro__Salid__47A6A41B" Association="Self.FK__SalidaPro__Salid__47A6A41B">
+            <End Role="Salida" EntitySet="Salida" />
+            <End Role="SalidaProducto" EntitySet="SalidaProducto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SalidaPro__Produ__489AC854" Association="Self.FK__SalidaPro__Produ__489AC854">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="SalidaProducto" EntitySet="SalidaProducto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Producto__Almace__5535A963" Association="Self.FK__Producto__Almace__5535A963">
+            <End Role="Almacen" EntitySet="Almacen" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Producto__Catego__5441852A" Association="Self.FK__Producto__Catego__5441852A">
+            <End Role="Categoria" EntitySet="Categoria" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+          <AssociationSet Name="PerfilPermiso" Association="Self.PerfilPermiso">
+            <End Role="Perfil" EntitySet="Perfil" />
+            <End Role="Permiso" EntitySet="Permiso" />
+          </AssociationSet>
+          <FunctionImport Name="usp_ObtenerResumen" ReturnType="Collection(PymexModel.usp_ObtenerResumen_Result)">
+            <Parameter Name="fechaInicio" Mode="In" Type="DateTime" />
+            <Parameter Name="fechaFin" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="usp_RegistrarEntrada">
+            <Parameter Name="fechaRegistro" Mode="In" Type="DateTime" />
+            <Parameter Name="usuarioRegistro" Mode="In" Type="String" />
+            <Parameter Name="proveedorId" Mode="In" Type="Int32" />
+            <Parameter Name="productos" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="usp_RegistrarSalida">
+            <Parameter Name="fechaRegistro" Mode="In" Type="DateTime" />
+            <Parameter Name="usuarioRegistro" Mode="In" Type="String" />
+            <Parameter Name="clienteId" Mode="In" Type="Int32" />
+            <Parameter Name="productos" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="usp_ObtenerResumen_Result">
+          <Property Type="String" Name="Codigo" Nullable="false" MaxLength="8" />
+          <Property Type="String" Name="Descripcion" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Categoria" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="Almacen" Nullable="false" MaxLength="30" />
+          <Property Type="Int32" Name="Entradas" Nullable="true" />
+          <Property Type="Int32" Name="Salidas" Nullable="false" />
+          <Property Type="Int32" Name="TotalIngresos" Nullable="false" />
+          <Property Type="Decimal" Name="TotalEgresos" Nullable="true" Precision="19" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PymexModelStoreContainer" CdmEntityContainer="PymexEntities">
+          <EntitySetMapping Name="Sistema">
+            <EntityTypeMapping TypeName="PymexModel.Sistema">
+              <MappingFragment StoreEntitySet="Sistema">
+                <ScalarProperty Name="SistemaID" ColumnName="SistemaID" />
+                <ScalarProperty Name="RazonSocial" ColumnName="RazonSocial" />
+                <ScalarProperty Name="RUC" ColumnName="RUC" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Logo" ColumnName="Logo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Perfil">
+            <EntityTypeMapping TypeName="PymexModel.Perfil">
+              <MappingFragment StoreEntitySet="Perfil">
+                <ScalarProperty Name="PerfilID" ColumnName="PerfilID" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Permiso">
+            <EntityTypeMapping TypeName="PymexModel.Permiso">
+              <MappingFragment StoreEntitySet="Permiso">
+                <ScalarProperty Name="PermisoID" ColumnName="PermisoID" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuario">
+            <EntityTypeMapping TypeName="PymexModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="UsuarioID" ColumnName="UsuarioID" />
+                <ScalarProperty Name="UsuarioLogin" ColumnName="UsuarioLogin" />
+                <ScalarProperty Name="Clave" ColumnName="Clave" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+                <ScalarProperty Name="PerfilID" ColumnName="PerfilID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Entrada">
+            <EntityTypeMapping TypeName="PymexModel.Entrada">
+              <MappingFragment StoreEntitySet="Entrada">
+                <ScalarProperty Name="EntradaID" ColumnName="EntradaID" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="ProveedorID" ColumnName="ProveedorID" />
+                <ScalarProperty Name="UsuarioRegistro" ColumnName="UsuarioRegistro" />
+                <ScalarProperty Name="FechaHoraRegistro" ColumnName="FechaHoraRegistro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EntradaProducto">
+            <EntityTypeMapping TypeName="PymexModel.EntradaProducto">
+              <MappingFragment StoreEntitySet="EntradaProducto">
+                <ScalarProperty Name="EntradaProductoID" ColumnName="EntradaProductoID" />
+                <ScalarProperty Name="EntradaID" ColumnName="EntradaID" />
+                <ScalarProperty Name="ProductoID" ColumnName="ProductoID" />
+                <ScalarProperty Name="PrecioCompraUnidad" ColumnName="PrecioCompraUnidad" />
+                <ScalarProperty Name="PrecioVentaUnidad" ColumnName="PrecioVentaUnidad" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Salida">
+            <EntityTypeMapping TypeName="PymexModel.Salida">
+              <MappingFragment StoreEntitySet="Salida">
+                <ScalarProperty Name="SalidaID" ColumnName="SalidaID" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="ClienteID" ColumnName="ClienteID" />
+                <ScalarProperty Name="UsuarioRegistro" ColumnName="UsuarioRegistro" />
+                <ScalarProperty Name="FechaHoraRegistro" ColumnName="FechaHoraRegistro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SalidaProducto">
+            <EntityTypeMapping TypeName="PymexModel.SalidaProducto">
+              <MappingFragment StoreEntitySet="SalidaProducto">
+                <ScalarProperty Name="SalidaProductoID" ColumnName="SalidaProductoID" />
+                <ScalarProperty Name="SalidaID" ColumnName="SalidaID" />
+                <ScalarProperty Name="ProductoID" ColumnName="ProductoID" />
+                <ScalarProperty Name="PrecioVentaUnidad" ColumnName="PrecioVentaUnidad" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cliente">
+            <EntityTypeMapping TypeName="PymexModel.Cliente">
+              <MappingFragment StoreEntitySet="Cliente">
+                <ScalarProperty Name="ClienteID" ColumnName="ClienteID" />
+                <ScalarProperty Name="TipoDocumento" ColumnName="TipoDocumento" />
+                <ScalarProperty Name="NumeroDocumento" ColumnName="NumeroDocumento" />
+                <ScalarProperty Name="NombreCompleto" ColumnName="NombreCompleto" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="UsuarioRegistro" ColumnName="UsuarioRegistro" />
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+                <ScalarProperty Name="UltimoUsuarioModifico" ColumnName="UltimoUsuarioModifico" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Proveedor">
+            <EntityTypeMapping TypeName="PymexModel.Proveedor">
+              <MappingFragment StoreEntitySet="Proveedor">
+                <ScalarProperty Name="ProveedorID" ColumnName="ProveedorID" />
+                <ScalarProperty Name="TipoDocumento" ColumnName="TipoDocumento" />
+                <ScalarProperty Name="NumeroDocumento" ColumnName="NumeroDocumento" />
+                <ScalarProperty Name="NombreCompleto" ColumnName="NombreCompleto" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="UsuarioRegistro" ColumnName="UsuarioRegistro" />
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+                <ScalarProperty Name="UltimoUsuarioModifico" ColumnName="UltimoUsuarioModifico" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Almacen">
+            <EntityTypeMapping TypeName="PymexModel.Almacen">
+              <MappingFragment StoreEntitySet="Almacen">
+                <ScalarProperty Name="AlmacenID" ColumnName="AlmacenID" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="UsuarioResponsable" ColumnName="UsuarioResponsable" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categoria">
+            <EntityTypeMapping TypeName="PymexModel.Categoria">
+              <MappingFragment StoreEntitySet="Categoria">
+                <ScalarProperty Name="CategoriaID" ColumnName="CategoriaID" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Producto">
+            <EntityTypeMapping TypeName="PymexModel.Producto">
+              <MappingFragment StoreEntitySet="Producto">
+                <ScalarProperty Name="ProductoID" ColumnName="ProductoID" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="CategoriaID" ColumnName="CategoriaID" />
+                <ScalarProperty Name="AlmacenID" ColumnName="AlmacenID" />
+                <ScalarProperty Name="UltimoPrecioCompra" ColumnName="UltimoPrecioCompra" />
+                <ScalarProperty Name="UltimoPrecioVenta" ColumnName="UltimoPrecioVenta" />
+                <ScalarProperty Name="Stock" ColumnName="Stock" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="UsuarioRegistro" ColumnName="UsuarioRegistro" />
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+                <ScalarProperty Name="UltimoUsuarioModifico" ColumnName="UltimoUsuarioModifico" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="PerfilPermiso" TypeName="PymexModel.PerfilPermiso" StoreEntitySet="PerfilPermiso">
+            <EndProperty Name="Perfil">
+              <ScalarProperty Name="PerfilID" ColumnName="PerfilID" />
+            </EndProperty>
+            <EndProperty Name="Permiso">
+              <ScalarProperty Name="PermisoID" ColumnName="PermisoID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="usp_ObtenerResumen" FunctionName="PymexModel.Store.usp_ObtenerResumen">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PymexModel.usp_ObtenerResumen_Result">
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Categoria" ColumnName="Categoria" />
+                <ScalarProperty Name="Almacen" ColumnName="Almacen" />
+                <ScalarProperty Name="Entradas" ColumnName="Entradas" />
+                <ScalarProperty Name="Salidas" ColumnName="Salidas" />
+                <ScalarProperty Name="TotalIngresos" ColumnName="TotalIngresos" />
+                <ScalarProperty Name="TotalEgresos" ColumnName="TotalEgresos" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_RegistrarEntrada" FunctionName="PymexModel.Store.usp_RegistrarEntrada" />
+          <FunctionImportMapping FunctionImportName="usp_RegistrarSalida" FunctionName="PymexModel.Store.usp_RegistrarSalida" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
