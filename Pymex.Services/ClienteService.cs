@@ -132,7 +132,7 @@ namespace Pymex.Services
             }
             catch (Exception ex)
             {
-                response.Mensaje = "Ups! Ocurrió un error al insertar el producto.";
+                response.Mensaje = "Ups! Ocurrió un error al insertar el cliente.";
                 response.EsCorrecto = false;
                 // Log Exception ...
             }
