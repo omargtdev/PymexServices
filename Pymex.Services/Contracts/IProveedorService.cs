@@ -17,11 +17,11 @@ namespace Pymex.Services.Contracts
     [DataContract]
     public class ProveedorDC
     {
-        [DataMember] public int Id { get; set; }
-        [DataMember] public TipoDocumento TipoDocumento { get; set; }
-        [DataMember] public string NumeroDocumento { get; set; }
-        [DataMember] public string NombreCompleto { get; set; }
-        [DataMember] public DateTime FechaRegistro { get; set; }
-        [DataMember] public string UsuarioAccion { get; set; }
+        [DataMember(Order = 1)] public int Id { get; set; }
+        [DataMember(Order = 2)] public TipoDocumento TipoDocumento { get; set; }
+        [DataMember(Order = 3)] public string NumeroDocumento { get; set; }
+        [DataMember(Order = 4)] public string NombreCompleto { get; set; }
+        [DataMember(Order = 5)] public HistorialSeguimientoDC HistorialSeguimiento { get; set; }
+        [DataMember(Order = 6)] public string UsuarioAccion { get; set; }
     }
 }

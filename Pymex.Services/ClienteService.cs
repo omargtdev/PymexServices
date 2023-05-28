@@ -139,7 +139,7 @@ namespace Pymex.Services
 
             return response;
         }
-
+            
         public ResponseWithDataDataContract<IEnumerable<ClienteDC>> Listar()
         {
             var response = new ResponseWithDataDataContract<IEnumerable<ClienteDC>>();
@@ -157,7 +157,13 @@ namespace Pymex.Services
                                          TipoDocumento = (TipoDocumento)cliente.TipoDocumento,
                                          NumeroDocumento = cliente.NumeroDocumento,
                                          NombreCompleto = cliente.NombreCompleto,
-                                         FechaRegistro = cliente.FechaRegistro
+                                         HistorialSeguimiento = new HistorialSeguimientoDC
+                                         {
+                                             FechaRegistro = cliente.FechaRegistro,
+                                             UsuarioRegistro = cliente.UsuarioRegistro,
+                                             FechaModificacion = cliente.FechaModificacion,
+                                             UltimoUsuarioModificacion = cliente.UltimoUsuarioModifico
+                                         }
                                      }).ToList();
                 }
             }
@@ -191,7 +197,13 @@ namespace Pymex.Services
                             TipoDocumento = (TipoDocumento)cliente.TipoDocumento,
                             NumeroDocumento = cliente.NumeroDocumento,
                             NombreCompleto = cliente.NombreCompleto,
-                            FechaRegistro = cliente.FechaRegistro
+                            HistorialSeguimiento = new HistorialSeguimientoDC 
+                            {
+                                FechaRegistro = cliente.FechaRegistro,
+                                UsuarioRegistro = cliente.UsuarioRegistro,
+                                FechaModificacion = cliente.FechaModificacion,
+                                UltimoUsuarioModificacion = cliente.UltimoUsuarioModifico
+                            }
                         };
                     }
                     else

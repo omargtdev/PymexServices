@@ -1,4 +1,5 @@
 ﻿using Pymex.Services.Models;
+using Pymex.Services.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,16 +19,16 @@ namespace Pymex.Services.Contracts
     [DataContract]
     public class ProductoDC
     {
-        [DataMember] public int Id { get; set; }
-        [DataMember] public string Codigo { get; set; }
-        [DataMember] public string Descripcion { get; set; }
-        [DataMember] public short CategoriaId { get; set; }
-        [DataMember] public short AlmacenId { get; set; }
-        [DataMember] public decimal UltimoPrecioCompra { get; set; }
-        [DataMember] public decimal UltimoPrecioVenta { get; set; }
-        [DataMember] public int Stock { get; set; }
-        [DataMember] public DateTime FechaRegistro { get; set; }
-        [DataMember] public string UsuarioAccion { get; set; }
+        [DataMember(Order = 1)] public int Id { get; set; }
+        [DataMember(Order = 2)] public string Codigo { get; set; }
+        [DataMember(Order = 3)] public string Descripcion { get; set; }
+        [DataMember(Order = 4)] public short CategoriaId { get; set; }
+        [DataMember(Order = 5)] public short AlmacenId { get; set; }
+        [DataMember(Order = 6)] public decimal UltimoPrecioCompra { get; set; }
+        [DataMember(Order = 7)] public decimal UltimoPrecioVenta { get; set; }
+        [DataMember(Order = 8)] public int Stock { get; set; }
+        [DataMember(Order = 9)] public HistorialSeguimientoDC HistorialSeguimiento { get; set; }
+        [DataMember(Order = 10)] public string UsuarioAccion { get; set; }
     }
 
 }

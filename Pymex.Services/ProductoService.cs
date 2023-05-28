@@ -3,6 +3,7 @@ using Pymex.Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Pymex.Services.ValueObjects;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
@@ -160,7 +161,13 @@ namespace Pymex.Services
                                          UltimoPrecioCompra = producto.UltimoPrecioCompra.HasValue ? (decimal)producto.UltimoPrecioCompra : 0,
                                          UltimoPrecioVenta = producto.UltimoPrecioVenta.HasValue ? (decimal)producto.UltimoPrecioVenta : 0,
                                          Stock = producto.Stock.HasValue ? (int)producto.Stock : 0,
-                                         FechaRegistro = producto.FechaRegistro,
+                                         HistorialSeguimiento = new HistorialSeguimientoDC
+                                         {
+                                             FechaRegistro = producto.FechaRegistro,
+                                             UsuarioRegistro = producto.UsuarioRegistro,
+                                             FechaModificacion = producto.FechaModificacion,
+                                             UltimoUsuarioModificacion = producto.UltimoUsuarioModifico
+                                         },
                                          CategoriaId = producto.CategoriaID,
                                          AlmacenId = producto.AlmacenID
                                      }).ToList();
@@ -201,7 +208,12 @@ namespace Pymex.Services
                             UltimoPrecioCompra = producto.UltimoPrecioCompra.HasValue ? (decimal)producto.UltimoPrecioCompra : 0,
                             UltimoPrecioVenta = producto.UltimoPrecioVenta.HasValue ? (decimal)producto.UltimoPrecioVenta : 0,
                             Stock = producto.Stock.HasValue ? (int)producto.Stock : 0,
-                            FechaRegistro = producto.FechaRegistro
+                            HistorialSeguimiento = new HistorialSeguimientoDC {
+                                FechaRegistro = producto.FechaRegistro,
+                                UsuarioRegistro = producto.UsuarioRegistro,
+                                FechaModificacion = producto.FechaModificacion,
+                                UltimoUsuarioModificacion = producto.UltimoUsuarioModifico
+                            }
                         };
                     }
                     else
@@ -246,7 +258,13 @@ namespace Pymex.Services
                             UltimoPrecioCompra = producto.UltimoPrecioCompra.HasValue ? (decimal)producto.UltimoPrecioCompra : 0,
                             UltimoPrecioVenta = producto.UltimoPrecioVenta.HasValue ? (decimal)producto.UltimoPrecioVenta : 0,
                             Stock = producto.Stock.HasValue ? (int)producto.Stock : 0,
-                            FechaRegistro = producto.FechaRegistro
+                            HistorialSeguimiento = new HistorialSeguimientoDC
+                            {
+                                FechaRegistro = producto.FechaRegistro,
+                                UsuarioRegistro = producto.UsuarioRegistro,
+                                FechaModificacion = producto.FechaModificacion,
+                                UltimoUsuarioModificacion = producto.UltimoUsuarioModifico
+                            }
                         };
                     }
                     else

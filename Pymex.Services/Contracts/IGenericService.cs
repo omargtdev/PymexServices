@@ -30,17 +30,17 @@ namespace Pymex.Services.Contracts
     [DataContract]
     public class ResponseWithDataDataContract<T> : ResponseDataContract where T : class
     {
-        [DataMember]
+        [DataMember(Order = 3)]
         public T Data { get; set; }
     }
 
     [DataContract]
     public class ResponseDataContract
     {
-        [DataMember]
-        public string Mensaje { get; set; }
-
-        [DataMember]
+        [DataMember(Order = 1)]
         public bool EsCorrecto { get; set; }
+
+        [DataMember(Order = 2)]
+        public string Mensaje { get; set; }
     }
 }

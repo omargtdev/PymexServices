@@ -157,7 +157,13 @@ namespace Pymex.Services
                                          TipoDocumento = (TipoDocumento)proveedor.TipoDocumento,
                                          NumeroDocumento = proveedor.NumeroDocumento,
                                          NombreCompleto = proveedor.NombreCompleto,
-                                         FechaRegistro = proveedor.FechaRegistro
+                                         HistorialSeguimiento = new HistorialSeguimientoDC
+                                         {
+                                             FechaRegistro = proveedor.FechaRegistro,
+                                             UsuarioRegistro = proveedor.UsuarioRegistro,
+                                             FechaModificacion = proveedor.FechaModificacion,
+                                             UltimoUsuarioModificacion = proveedor.UltimoUsuarioModifico
+                                         }
                                      }).ToList();
                 }
             }
@@ -191,7 +197,13 @@ namespace Pymex.Services
                             TipoDocumento = (TipoDocumento)proveedor.TipoDocumento,
                             NumeroDocumento = proveedor.NumeroDocumento,
                             NombreCompleto = proveedor.NombreCompleto,
-                            FechaRegistro = proveedor.FechaRegistro
+                            HistorialSeguimiento = new HistorialSeguimientoDC 
+                            { 
+                                FechaRegistro = proveedor.FechaRegistro, 
+                                UsuarioRegistro = proveedor.UsuarioRegistro, 
+                                FechaModificacion = proveedor.FechaModificacion, 
+                                UltimoUsuarioModificacion = proveedor.UltimoUsuarioModifico 
+                            }
                         };
                     }
                     else
