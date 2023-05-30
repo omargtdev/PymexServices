@@ -59,9 +59,11 @@
   <ItemGroup>
     <Compile Include="ClienteService.cs" />
     <Compile Include="Contracts\IGenericService.cs" />
+    <Compile Include="Contracts\IInventarioService.cs" />
     <Compile Include="Contracts\IProductoService.cs" />
     <Compile Include="Contracts\IProveedorService.cs" />
     <Compile Include="Contracts\IClienteService.cs" />
+    <Compile Include="InventarioService.cs" />
     <Compile Include="Models\Almacen.cs">
       <DependentUpon>Pymex.tt</DependentUpon>
     </Compile>
