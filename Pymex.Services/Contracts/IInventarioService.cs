@@ -12,16 +12,10 @@ namespace Pymex.Services.Contracts
     public interface IInventarioService
     {
         [OperationContract]
-        ResponseWithDataDataContract<ProductoDC> ObtenerProductoMasVendido();
+        ResponseDataContract RegistrarEntrada(EntradaDC entrada);
 
         [OperationContract]
-        ResponseWithDataDataContract<IEnumerable<EntradaDC>> ObtenerEntradasPorProveedor(string numeroDocumento, DateTime fechaInicio, DateTime fechaFin);
-
-        [OperationContract]
-        ResponseWithDataDataContract<IEnumerable<SalidaDC>> ObtenerSalidasPorCliente(string numeroDocumento, DateTime fechaInicio, DateTime fechaFin);
-
-        [OperationContract]
-        ResponseWithDataDataContract<IEnumerable<ClienteDC>> ObtenerClientesSinNingunaCompra();
+        ResponseDataContract RegistrarSalida(SalidaDC salida);
     }
 
     [DataContract]
