@@ -43,7 +43,7 @@
           </Key>
           <Property Name="UsuarioID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UsuarioLogin" Type="nvarchar" MaxLength="30" Nullable="false" />
-          <Property Name="Clave" Type="varbinary(max)" Nullable="false" />
+          <Property Name="Clave" Type="varchar" MaxLength="256" />
           <Property Name="Nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Apellidos" Type="nvarchar" MaxLength="80" Nullable="false" />
           <Property Name="PerfilID" Type="smallint" Nullable="false" />
@@ -321,8 +321,8 @@
           </Key>
           <Property Name="PerfilID" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nombre" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Usuario" Relationship="Self.FK__Usuario__PerfilI__57DD0BE4" FromRole="Perfil" ToRole="Usuario" />
           <NavigationProperty Name="Permiso" Relationship="Self.PerfilPermiso" FromRole="Perfil" ToRole="Permiso" />
+          <NavigationProperty Name="Usuario" Relationship="PymexModel.FK__Usuario__PerfilI__57DD0BE4" FromRole="Perfil" ToRole="Usuario" />
         </EntityType>
         <EntityType Name="Permiso">
           <Key>
@@ -331,18 +331,6 @@
           <Property Name="PermisoID" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nombre" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Perfil" Relationship="Self.PerfilPermiso" FromRole="Permiso" ToRole="Perfil" />
-        </EntityType>
-        <EntityType Name="Usuario">
-          <Key>
-            <PropertyRef Name="UsuarioID" />
-          </Key>
-          <Property Name="UsuarioID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UsuarioLogin" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Clave" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
-          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Apellidos" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PerfilID" Type="Int16" Nullable="false" />
-          <NavigationProperty Name="Perfil" Relationship="Self.FK__Usuario__PerfilI__57DD0BE4" FromRole="Usuario" ToRole="Perfil" />
         </EntityType>
         <EntityType Name="Entrada">
           <Key>
@@ -465,18 +453,6 @@
           <NavigationProperty Name="Almacen" Relationship="Self.FK__Producto__Almace__5535A963" FromRole="Producto" ToRole="Almacen" />
           <NavigationProperty Name="Categoria" Relationship="Self.FK__Producto__Catego__5441852A" FromRole="Producto" ToRole="Categoria" />
         </EntityType>
-        <Association Name="FK__Usuario__PerfilI__57DD0BE4">
-          <End Role="Perfil" Type="Self.Perfil" Multiplicity="1" />
-          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Perfil">
-              <PropertyRef Name="PerfilID" />
-            </Principal>
-            <Dependent Role="Usuario">
-              <PropertyRef Name="PerfilID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Entrada__Proveed__4C6B5938">
           <End Role="Proveedor" Type="Self.Proveedor" Multiplicity="1" />
           <End Role="Entrada" Type="Self.Entrada" Multiplicity="*" />
@@ -581,7 +557,6 @@
           <EntitySet Name="Sistema" EntityType="Self.Sistema" />
           <EntitySet Name="Perfil" EntityType="Self.Perfil" />
           <EntitySet Name="Permiso" EntityType="Self.Permiso" />
-          <EntitySet Name="Usuario" EntityType="Self.Usuario" />
           <EntitySet Name="Entrada" EntityType="Self.Entrada" />
           <EntitySet Name="EntradaProducto" EntityType="Self.EntradaProducto" />
           <EntitySet Name="Salida" EntityType="Self.Salida" />
@@ -591,10 +566,6 @@
           <EntitySet Name="Almacen" EntityType="Self.Almacen" />
           <EntitySet Name="Categoria" EntityType="Self.Categoria" />
           <EntitySet Name="Producto" EntityType="Self.Producto" />
-          <AssociationSet Name="FK__Usuario__PerfilI__57DD0BE4" Association="Self.FK__Usuario__PerfilI__57DD0BE4">
-            <End Role="Perfil" EntitySet="Perfil" />
-            <End Role="Usuario" EntitySet="Usuario" />
-          </AssociationSet>
           <AssociationSet Name="FK__Entrada__Proveed__4C6B5938" Association="Self.FK__Entrada__Proveed__4C6B5938">
             <End Role="Proveedor" EntitySet="Proveedor" />
             <End Role="Entrada" EntitySet="Entrada" />
@@ -647,6 +618,11 @@
             <Parameter Name="clienteId" Mode="In" Type="Int32" />
             <Parameter Name="productos" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="Usuario" EntityType="PymexModel.Usuario" />
+          <AssociationSet Name="FK__Usuario__PerfilI__57DD0BE4" Association="PymexModel.FK__Usuario__PerfilI__57DD0BE4">
+            <End Role="Perfil" EntitySet="Perfil" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="usp_ObtenerResumen_Result">
           <Property Type="String" Name="Codigo" Nullable="false" MaxLength="8" />
@@ -658,6 +634,30 @@
           <Property Type="Int32" Name="TotalIngresos" Nullable="false" />
           <Property Type="Decimal" Name="TotalEgresos" Nullable="true" Precision="19" />
         </ComplexType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="UsuarioID" />
+          </Key>
+          <Property Name="UsuarioID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UsuarioLogin" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Clave" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Apellidos" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="PerfilID" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="Perfil" Relationship="PymexModel.FK__Usuario__PerfilI__57DD0BE4" FromRole="Usuario" ToRole="Perfil" />
+        </EntityType>
+        <Association Name="FK__Usuario__PerfilI__57DD0BE4">
+          <End Type="PymexModel.Perfil" Role="Perfil" Multiplicity="1" />
+          <End Type="PymexModel.Usuario" Role="Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Perfil">
+              <PropertyRef Name="PerfilID" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="PerfilID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -688,18 +688,6 @@
               <MappingFragment StoreEntitySet="Permiso">
                 <ScalarProperty Name="PermisoID" ColumnName="PermisoID" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Usuario">
-            <EntityTypeMapping TypeName="PymexModel.Usuario">
-              <MappingFragment StoreEntitySet="Usuario">
-                <ScalarProperty Name="UsuarioID" ColumnName="UsuarioID" />
-                <ScalarProperty Name="UsuarioLogin" ColumnName="UsuarioLogin" />
-                <ScalarProperty Name="Clave" ColumnName="Clave" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
-                <ScalarProperty Name="PerfilID" ColumnName="PerfilID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -839,6 +827,18 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="usp_RegistrarEntrada" FunctionName="PymexModel.Store.usp_RegistrarEntrada" />
           <FunctionImportMapping FunctionImportName="usp_RegistrarSalida" FunctionName="PymexModel.Store.usp_RegistrarSalida" />
+          <EntitySetMapping Name="Usuario">
+            <EntityTypeMapping TypeName="PymexModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="PerfilID" ColumnName="PerfilID" />
+                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Clave" ColumnName="Clave" />
+                <ScalarProperty Name="UsuarioLogin" ColumnName="UsuarioLogin" />
+                <ScalarProperty Name="UsuarioID" ColumnName="UsuarioID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -16,7 +16,7 @@ namespace Pymex.Services.Models
     {
         public int UsuarioID { get; set; }
         public string UsuarioLogin { get; set; }
-        public byte[] Clave { get; set; }
+        public string Clave { get; set; }
         public string Nombre { get; set; }
         public string Apellidos { get; set; }
         public short PerfilID { get; set; }

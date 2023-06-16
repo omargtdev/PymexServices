@@ -63,8 +63,10 @@
     <Compile Include="Contracts\IProductoService.cs" />
     <Compile Include="Contracts\IProveedorService.cs" />
     <Compile Include="Contracts\IClienteService.cs" />
+    <Compile Include="Exceptions\InsufficientPermissionsException.cs" />
     <Compile Include="InventarioService.cs" />
     <Compile Include="Contracts\IReportesService.cs" />
+    <Compile Include="Contracts\IUsuarioService.cs" />
     <Compile Include="Models\Almacen.cs">
       <DependentUpon>Pymex.tt</DependentUpon>
     </Compile>
@@ -126,7 +128,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProveedorService.cs" />
     <Compile Include="ReportesService.cs" />
+    <Compile Include="UsuarioService.cs" />
     <Compile Include="ValueObjects\HistorialSeguimientoDC.cs" />
+    <Compile Include="ValueObjects\Perfil.cs" />
     <Compile Include="ValueObjects\TipoDocumento.cs" />
   </ItemGroup>
   <ItemGroup>
