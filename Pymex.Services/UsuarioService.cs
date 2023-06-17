@@ -14,9 +14,43 @@ namespace Pymex.Services
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "UsuarioService" in both code and config file together.
     public class UsuarioService : IUsuarioService
     {
-        public ResponseDataContract ActualizarUsuario(UsuarioDC usuario)
+        public ResponseDataContract ActualizarUsuario(UsuarioDC usuarioDC)
         {
-            throw new NotImplementedException();
+            var response = new ResponseDataContract();
+            response.EsCorrecto = true;
+
+            try
+            {
+                using (PymexEntities db = new PymexEntities())
+                {
+                    Usuario usuario = (from usuarioEntity in db.Usuario
+                                           where usuarioEntity.UsuarioLogin == usuarioDC.Login
+                                           select usuarioEntity).FirstOrDefault();
+
+                    if (usuario == null)
+                    {
+                        response.EsCorrecto = false;
+                        response.Mensaje = "El usuario a actualizar no existe.";
+                        return response;
+                    }
+
+                    usuario.Nombre = usuarioDC.Nombre;
+                    usuario.Apellidos = usuarioDC.Apellidos;
+                    usuario.PerfilID = (short)usuarioDC.Perfil;
+
+                    db.SaveChanges();
+
+                    response.Mensaje = "Se actualizó el usuario correctamente";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Mensaje = "Ups! Ocurrió un error al actualizar el usuario.";
+                response.EsCorrecto = false;
+                // Log Exception ...
+            }
+
+            return response;
         }
 
         public ResponseWithDataDataContract<UsuarioDC> Login(string username, string passwordEncriptado)
