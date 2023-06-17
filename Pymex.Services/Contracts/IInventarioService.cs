@@ -1,4 +1,5 @@
-﻿using Pymex.Services.ValueObjects;
+﻿using Pymex.Services.Models;
+using Pymex.Services.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,17 @@ namespace Pymex.Services.Contracts
 
         [DataMember(Order = 6)]
         public IEnumerable<EntradaDetalleDC> DetalleProductos { get; set; }
+
+        [DataMember(Order = 7)]
+        public string UsuarioAccion { get; set; }
+
+        public bool ExistenCamposInvalidos()
+        {
+            return FechaRegistro == null ||
+                   Proveedor == null ||
+                   DetalleProductos == null ||
+                   string.IsNullOrEmpty(UsuarioAccion);
+        }
     }
 
     [DataContract]
@@ -79,6 +91,17 @@ namespace Pymex.Services.Contracts
 
         [DataMember(Order = 6)]
         public IEnumerable<SalidaDetalleDC> DetalleProductos { get; set; }
+
+        [DataMember(Order = 7)]
+        public string UsuarioAccion { get; set; }
+
+        public bool ExistenCamposInvalidos()
+        {
+            return FechaRegistro == null ||
+                   Cliente == null ||
+                   DetalleProductos == null ||
+                   string.IsNullOrEmpty(UsuarioAccion);
+        }
     }
 
     [DataContract]
