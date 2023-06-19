@@ -127,7 +127,7 @@
           <Property Name="Descripcion" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="Direccion" Type="varchar" MaxLength="200" />
           <Property Name="Telefono" Type="varchar" MaxLength="15" />
-          <Property Name="UsuarioResponsable" Type="nvarchar" MaxLength="30" />
+          <Property Name="Aforo" Type="int" />
         </EntityType>
         <EntityType Name="Categoria">
           <Key>
@@ -421,8 +421,8 @@
           <Property Name="Descripcion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Direccion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="Telefono" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Name="UsuarioResponsable" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Producto" Relationship="Self.FK__Producto__Almace__5535A963" FromRole="Almacen" ToRole="Producto" />
+          <Property Name="Aforo" Type="Int32" />
         </EntityType>
         <EntityType Name="Categoria">
           <Key>
@@ -769,11 +769,11 @@
           <EntitySetMapping Name="Almacen">
             <EntityTypeMapping TypeName="PymexModel.Almacen">
               <MappingFragment StoreEntitySet="Almacen">
+                <ScalarProperty Name="Aforo" ColumnName="Aforo" />
                 <ScalarProperty Name="AlmacenID" ColumnName="AlmacenID" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
                 <ScalarProperty Name="Direccion" ColumnName="Direccion" />
                 <ScalarProperty Name="Telefono" ColumnName="Telefono" />
-                <ScalarProperty Name="UsuarioResponsable" ColumnName="UsuarioResponsable" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

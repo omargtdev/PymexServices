@@ -24,7 +24,7 @@ namespace Pymex.Services.Models
         public string Descripcion { get; set; }
         public string Direccion { get; set; }
         public string Telefono { get; set; }
-        public string UsuarioResponsable { get; set; }
+        public Nullable<int> Aforo { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Producto> Producto { get; set; }
