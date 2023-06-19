@@ -57,6 +57,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CategoriaService.cs" />
     <Compile Include="ClienteService.cs" />
     <Compile Include="Contracts\IGenericService.cs" />
     <Compile Include="Contracts\IInventarioService.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Contracts\IProveedorService.cs" />
     <Compile Include="Contracts\IClienteService.cs" />
     <Compile Include="Exceptions\InsufficientPermissionsException.cs" />
+    <Compile Include="Contracts\ICategoriaService.cs" />
     <Compile Include="InventarioService.cs" />
     <Compile Include="Contracts\IReportesService.cs" />
     <Compile Include="Contracts\IUsuarioService.cs" />
@@ -129,6 +131,7 @@
     <Compile Include="ProveedorService.cs" />
     <Compile Include="ReportesService.cs" />
     <Compile Include="UsuarioService.cs" />
+    <Compile Include="Utils\SqlExceptionNumbers.cs" />
     <Compile Include="ValueObjects\HistorialSeguimientoDC.cs" />
     <Compile Include="ValueObjects\Perfil.cs" />
     <Compile Include="ValueObjects\TipoDocumento.cs" />
