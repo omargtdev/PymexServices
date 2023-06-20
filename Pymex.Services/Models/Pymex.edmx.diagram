@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="193a19fcfa25421695ddec614a2b4382" Name="Diagram1">
+      <Diagram DiagramId="193a19fcfa25421695ddec614a2b4382" Name="Diagram1" ZoomLevel="63">
         <EntityTypeShape EntityType="PymexModel.Sistema" Width="1.5" PointX="5.75" PointY="7.375" IsExpanded="true" />
         <EntityTypeShape EntityType="PymexModel.Perfil" Width="1.5" PointX="8.75" PointY="9.125" IsExpanded="true" />
         <EntityTypeShape EntityType="PymexModel.Permiso" Width="1.5" PointX="11" PointY="7.625" IsExpanded="true" />

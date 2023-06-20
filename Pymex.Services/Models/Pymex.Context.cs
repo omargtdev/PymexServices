@@ -95,5 +95,33 @@ namespace Pymex.Services.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_RegistrarSalida", fechaRegistroParameter, usuarioRegistroParameter, clienteIdParameter, productosParameter);
         }
+    
+        public virtual ObjectResult<usp_BuscarEntradaPorCodigo_Result> usp_BuscarEntradaPorCodigo(string codigo)
+        {
+            var codigoParameter = codigo != null ?
+                new ObjectParameter("codigo", codigo) :
+                new ObjectParameter("codigo", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_BuscarEntradaPorCodigo_Result>("usp_BuscarEntradaPorCodigo", codigoParameter);
+        }
+    
+        public virtual ObjectResult<usp_BuscarSalidaPorCodigo_Result> usp_BuscarSalidaPorCodigo(string codigo)
+        {
+            var codigoParameter = codigo != null ?
+                new ObjectParameter("codigo", codigo) :
+                new ObjectParameter("codigo", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_BuscarSalidaPorCodigo_Result>("usp_BuscarSalidaPorCodigo", codigoParameter);
+        }
+    
+        public virtual ObjectResult<usp_ListarSalidas_Result> usp_ListarSalidas()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_ListarSalidas_Result>("usp_ListarSalidas");
+        }
+    
+        public virtual ObjectResult<usp_ListarEntradas_Result> usp_ListarEntradas()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_ListarEntradas_Result>("usp_ListarEntradas");
+        }
     }
 }

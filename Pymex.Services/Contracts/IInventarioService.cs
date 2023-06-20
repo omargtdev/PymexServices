@@ -17,6 +17,18 @@ namespace Pymex.Services.Contracts
 
         [OperationContract]
         ResponseDataContract RegistrarSalida(SalidaDC salida);
+
+        [OperationContract]
+        ResponseWithDataDataContract<IEnumerable<SalidaDC>> ListarSalidas();
+
+        [OperationContract]
+        ResponseWithDataDataContract<IEnumerable<EntradaDC>> ListarEntradas();
+
+        [OperationContract]
+        ResponseWithDataDataContract<SalidaDC> BuscarSalidaPorCodigo(string codigo);
+
+        [OperationContract]
+        ResponseWithDataDataContract<EntradaDC> BuscarEntradaPorCodigo(string codigo);
     }
 
     [DataContract]

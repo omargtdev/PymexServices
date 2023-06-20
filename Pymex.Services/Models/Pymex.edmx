@@ -241,6 +241,14 @@
           <Parameter Name="letraInicial" Type="char" Mode="In" />
           <Parameter Name="numero" Type="int" Mode="In" />
         </Function>
+        <Function Name="usp_BuscarEntradaPorCodigo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="inventarios">
+          <Parameter Name="codigo" Type="char" Mode="In" />
+        </Function>
+        <Function Name="usp_BuscarSalidaPorCodigo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="inventarios">
+          <Parameter Name="codigo" Type="char" Mode="In" />
+        </Function>
+        <Function Name="usp_ListarEntradas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="inventarios" />
+        <Function Name="usp_ListarSalidas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="inventarios" />
         <Function Name="usp_ObtenerResumen" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="inventarios">
           <Parameter Name="fechaInicio" Type="date" Mode="In" />
           <Parameter Name="fechaFin" Type="date" Mode="In" />
@@ -623,6 +631,14 @@
             <End Role="Perfil" EntitySet="Perfil" />
             <End Role="Usuario" EntitySet="Usuario" />
           </AssociationSet>
+          <FunctionImport Name="usp_BuscarEntradaPorCodigo" ReturnType="Collection(PymexModel.usp_BuscarEntradaPorCodigo_Result)">
+          <Parameter Name="codigo" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="usp_BuscarSalidaPorCodigo" ReturnType="Collection(PymexModel.usp_BuscarSalidaPorCodigo_Result)">
+          <Parameter Name="codigo" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="usp_ListarSalidas" ReturnType="Collection(PymexModel.usp_ListarSalidas_Result)" />
+          <FunctionImport Name="usp_ListarEntradas" ReturnType="Collection(PymexModel.usp_ListarEntradas_Result)" />
         </EntityContainer>
         <ComplexType Name="usp_ObtenerResumen_Result">
           <Property Type="String" Name="Codigo" Nullable="false" MaxLength="8" />
@@ -658,6 +674,66 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="usp_BuscarEntradaPorCodigo_Result">
+          <Property Type="Int32" Name="EntradaID" Nullable="true" />
+          <Property Type="String" Name="Codigo" Nullable="true" MaxLength="8" />
+          <Property Type="DateTime" Name="FechaRegistro" Nullable="true" />
+          <Property Type="Int32" Name="ProveedorID" Nullable="true" />
+          <Property Type="Byte" Name="TipoDocumento" Nullable="true" />
+          <Property Type="String" Name="NumeroDocumento" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="NombreCompleto" Nullable="true" MaxLength="200" />
+          <Property Type="DateTime" Name="ProveedorFechaRegistro" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ProveedorUsuarioRegistro" Nullable="true" MaxLength="60" />
+          <Property Type="DateTime" Name="ProveedorFechaModificacion" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ProveedorUltimoUsuarioModifico" Nullable="true" MaxLength="60" />
+          <Property Type="DateTime" Name="EntradaFechaRegistro" Nullable="true" Precision="23" />
+          <Property Type="String" Name="EntradaUsuarioRegistro" Nullable="true" MaxLength="60" />
+        </ComplexType>
+        <ComplexType Name="usp_BuscarSalidaPorCodigo_Result">
+          <Property Type="Int32" Name="SalidaID" Nullable="true" />
+          <Property Type="String" Name="Codigo" Nullable="true" MaxLength="8" />
+          <Property Type="DateTime" Name="FechaRegistro" Nullable="true" />
+          <Property Type="Int32" Name="ClienteID" Nullable="true" />
+          <Property Type="Byte" Name="TipoDocumento" Nullable="true" />
+          <Property Type="String" Name="NumeroDocumento" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="NombreCompleto" Nullable="true" MaxLength="200" />
+          <Property Type="DateTime" Name="ClienteFechaRegistro" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ClienteUsuarioRegistro" Nullable="true" MaxLength="60" />
+          <Property Type="DateTime" Name="ClienteFechaModificacion" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ClienteUltimoUsuarioModifico" Nullable="true" MaxLength="60" />
+          <Property Type="DateTime" Name="SalidaFechaRegistro" Nullable="true" Precision="23" />
+          <Property Type="String" Name="SalidaUsuarioRegistro" Nullable="true" MaxLength="60" />
+        </ComplexType>
+        <ComplexType Name="usp_ListarSalidas_Result">
+          <Property Type="Int32" Name="SalidaID" Nullable="false" />
+          <Property Type="String" Name="Codigo" Nullable="false" MaxLength="8" />
+          <Property Type="DateTime" Name="FechaRegistro" Nullable="false" />
+          <Property Type="Int32" Name="ClienteID" Nullable="false" />
+          <Property Type="Byte" Name="TipoDocumento" Nullable="true" />
+          <Property Type="String" Name="NumeroDocumento" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="NombreCompleto" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="ClienteFechaRegistro" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ClienteUsuarioRegistro" Nullable="true" MaxLength="30" />
+          <Property Type="DateTime" Name="ClienteFechaModificacion" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ClienteUltimoUsuarioModifico" Nullable="true" MaxLength="30" />
+          <Property Type="DateTime" Name="SalidaFechaRegistro" Nullable="false" Precision="23" />
+          <Property Type="String" Name="SalidaUsuarioRegistro" Nullable="false" MaxLength="30" />
+        </ComplexType>
+        <ComplexType Name="usp_ListarEntradas_Result">
+          <Property Type="Int32" Name="EntradaID" Nullable="false" />
+          <Property Type="String" Name="Codigo" Nullable="false" MaxLength="8" />
+          <Property Type="DateTime" Name="FechaRegistro" Nullable="false" />
+          <Property Type="Int32" Name="ProveedorID" Nullable="false" />
+          <Property Type="Byte" Name="TipoDocumento" Nullable="true" />
+          <Property Type="String" Name="NumeroDocumento" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="NombreCompleto" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="ProveedorFechaRegistro" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ProveedorUsuarioRegistro" Nullable="true" MaxLength="30" />
+          <Property Type="DateTime" Name="ProveedorFechaModificacion" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ProveedorUltimoUsuarioModifico" Nullable="true" MaxLength="30" />
+          <Property Type="DateTime" Name="EntradaFechaRegistro" Nullable="false" Precision="23" />
+          <Property Type="String" Name="EntradaUsuarioRegistro" Nullable="false" MaxLength="30" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -839,7 +915,83 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          <FunctionImportMapping FunctionImportName="usp_BuscarEntradaPorCodigo" FunctionName="PymexModel.Store.usp_BuscarEntradaPorCodigo">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PymexModel.usp_BuscarEntradaPorCodigo_Result">
+                <ScalarProperty Name="EntradaID" ColumnName="EntradaID" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="ProveedorID" ColumnName="ProveedorID" />
+                <ScalarProperty Name="TipoDocumento" ColumnName="TipoDocumento" />
+                <ScalarProperty Name="NumeroDocumento" ColumnName="NumeroDocumento" />
+                <ScalarProperty Name="NombreCompleto" ColumnName="NombreCompleto" />
+                <ScalarProperty Name="ProveedorFechaRegistro" ColumnName="ProveedorFechaRegistro" />
+                <ScalarProperty Name="ProveedorUsuarioRegistro" ColumnName="ProveedorUsuarioRegistro" />
+                <ScalarProperty Name="ProveedorFechaModificacion" ColumnName="ProveedorFechaModificacion" />
+                <ScalarProperty Name="ProveedorUltimoUsuarioModifico" ColumnName="ProveedorUltimoUsuarioModifico" />
+                <ScalarProperty Name="EntradaFechaRegistro" ColumnName="EntradaFechaRegistro" />
+                <ScalarProperty Name="EntradaUsuarioRegistro" ColumnName="EntradaUsuarioRegistro" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_BuscarSalidaPorCodigo" FunctionName="PymexModel.Store.usp_BuscarSalidaPorCodigo">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PymexModel.usp_BuscarSalidaPorCodigo_Result">
+                <ScalarProperty Name="SalidaID" ColumnName="SalidaID" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="ClienteID" ColumnName="ClienteID" />
+                <ScalarProperty Name="TipoDocumento" ColumnName="TipoDocumento" />
+                <ScalarProperty Name="NumeroDocumento" ColumnName="NumeroDocumento" />
+                <ScalarProperty Name="NombreCompleto" ColumnName="NombreCompleto" />
+                <ScalarProperty Name="ClienteFechaRegistro" ColumnName="ClienteFechaRegistro" />
+                <ScalarProperty Name="ClienteUsuarioRegistro" ColumnName="ClienteUsuarioRegistro" />
+                <ScalarProperty Name="ClienteFechaModificacion" ColumnName="ClienteFechaModificacion" />
+                <ScalarProperty Name="ClienteUltimoUsuarioModifico" ColumnName="ClienteUltimoUsuarioModifico" />
+                <ScalarProperty Name="SalidaFechaRegistro" ColumnName="SalidaFechaRegistro" />
+                <ScalarProperty Name="SalidaUsuarioRegistro" ColumnName="SalidaUsuarioRegistro" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_ListarSalidas" FunctionName="PymexModel.Store.usp_ListarSalidas">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PymexModel.usp_ListarSalidas_Result">
+                <ScalarProperty Name="SalidaID" ColumnName="SalidaID" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="ClienteID" ColumnName="ClienteID" />
+                <ScalarProperty Name="TipoDocumento" ColumnName="TipoDocumento" />
+                <ScalarProperty Name="NumeroDocumento" ColumnName="NumeroDocumento" />
+                <ScalarProperty Name="NombreCompleto" ColumnName="NombreCompleto" />
+                <ScalarProperty Name="ClienteFechaRegistro" ColumnName="ClienteFechaRegistro" />
+                <ScalarProperty Name="ClienteUsuarioRegistro" ColumnName="ClienteUsuarioRegistro" />
+                <ScalarProperty Name="ClienteFechaModificacion" ColumnName="ClienteFechaModificacion" />
+                <ScalarProperty Name="ClienteUltimoUsuarioModifico" ColumnName="ClienteUltimoUsuarioModifico" />
+                <ScalarProperty Name="SalidaFechaRegistro" ColumnName="SalidaFechaRegistro" />
+                <ScalarProperty Name="SalidaUsuarioRegistro" ColumnName="SalidaUsuarioRegistro" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_ListarEntradas" FunctionName="PymexModel.Store.usp_ListarEntradas">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PymexModel.usp_ListarEntradas_Result">
+                <ScalarProperty Name="EntradaID" ColumnName="EntradaID" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="ProveedorID" ColumnName="ProveedorID" />
+                <ScalarProperty Name="TipoDocumento" ColumnName="TipoDocumento" />
+                <ScalarProperty Name="NumeroDocumento" ColumnName="NumeroDocumento" />
+                <ScalarProperty Name="NombreCompleto" ColumnName="NombreCompleto" />
+                <ScalarProperty Name="ProveedorFechaRegistro" ColumnName="ProveedorFechaRegistro" />
+                <ScalarProperty Name="ProveedorUsuarioRegistro" ColumnName="ProveedorUsuarioRegistro" />
+                <ScalarProperty Name="ProveedorFechaModificacion" ColumnName="ProveedorFechaModificacion" />
+                <ScalarProperty Name="ProveedorUltimoUsuarioModifico" ColumnName="ProveedorUltimoUsuarioModifico" />
+                <ScalarProperty Name="EntradaFechaRegistro" ColumnName="EntradaFechaRegistro" />
+                <ScalarProperty Name="EntradaUsuarioRegistro" ColumnName="EntradaUsuarioRegistro" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

@@ -122,6 +122,18 @@
     <Compile Include="Models\Sistema.cs">
       <DependentUpon>Pymex.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\usp_BuscarEntradaPorCodigo_Result.cs">
+      <DependentUpon>Pymex.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\usp_BuscarSalidaPorCodigo_Result.cs">
+      <DependentUpon>Pymex.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\usp_ListarEntradas_Result.cs">
+      <DependentUpon>Pymex.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\usp_ListarSalidas_Result.cs">
+      <DependentUpon>Pymex.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\usp_ObtenerResumen_Result.cs">
       <DependentUpon>Pymex.tt</DependentUpon>
     </Compile>
@@ -149,7 +161,9 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Mappers\" />
+  </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
