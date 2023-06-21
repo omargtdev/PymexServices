@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Pymex.Services.Contracts.Operations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -9,7 +10,7 @@ namespace Pymex.Services.Contracts
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IAlmacenService" in both code and config file together.
     [ServiceContract]
-    public interface IAlmacenService : IGenericService<AlmacenDC>
+    public interface IAlmacenService : IGenericService<AlmacenDC>, IDeleteOperation<AlmacenDC>
     {
     }
 

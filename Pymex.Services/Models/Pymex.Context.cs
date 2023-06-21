@@ -38,8 +38,8 @@ namespace Pymex.Services.Models
         public virtual DbSet<Proveedor> Proveedor { get; set; }
         public virtual DbSet<Almacen> Almacen { get; set; }
         public virtual DbSet<Categoria> Categoria { get; set; }
-        public virtual DbSet<Producto> Producto { get; set; }
         public virtual DbSet<Usuario> Usuario { get; set; }
+        public virtual DbSet<Producto> Producto { get; set; }
     
         public virtual ObjectResult<usp_ObtenerResumen_Result> usp_ObtenerResumen(Nullable<System.DateTime> fechaInicio, Nullable<System.DateTime> fechaFin)
         {

@@ -26,6 +26,7 @@ namespace Pymex.Services.Models
         public string Descripcion { get; set; }
         public short CategoriaID { get; set; }
         public short AlmacenID { get; set; }
+        public bool Activo { get; set; }
         public Nullable<decimal> UltimoPrecioCompra { get; set; }
         public Nullable<decimal> UltimoPrecioVenta { get; set; }
         public Nullable<int> Stock { get; set; }

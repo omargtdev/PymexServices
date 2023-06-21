@@ -1,4 +1,5 @@
-﻿using Pymex.Services.ValueObjects;
+﻿using Pymex.Services.Contracts.Operations;
+using Pymex.Services.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Text;
 namespace Pymex.Services.Contracts
 {
     [ServiceContract]
-    public interface IProveedorService : IGenericService<ProveedorDC>
+    public interface IProveedorService : IGenericService<ProveedorDC>, IDeleteOperation<ProveedorDC>
     {
         
     }

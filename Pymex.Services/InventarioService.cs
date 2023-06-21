@@ -4,6 +4,7 @@ using Pymex.Services.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.Remoting;
 using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
@@ -45,6 +46,7 @@ namespace Pymex.Services
                                                     Id = producto.ProductoID,
                                                     Codigo = producto.Codigo,
                                                     Descripcion = producto.Descripcion,
+                                                    Activo = producto.Activo,
                                                     UltimoPrecioCompra = producto.UltimoPrecioCompra.HasValue ? (decimal)producto.UltimoPrecioCompra : 0,
                                                     UltimoPrecioVenta = producto.UltimoPrecioVenta.HasValue ? (decimal)producto.UltimoPrecioVenta : 0,
                                                     Stock = producto.Stock.HasValue ? (int)producto.Stock : 0,
@@ -132,6 +134,7 @@ namespace Pymex.Services
                                                     Id = producto.ProductoID,
                                                     Codigo = producto.Codigo,
                                                     Descripcion = producto.Descripcion,
+                                                    Activo = producto.Activo,
                                                     UltimoPrecioCompra = producto.UltimoPrecioCompra.HasValue ? (decimal)producto.UltimoPrecioCompra : 0,
                                                     UltimoPrecioVenta = producto.UltimoPrecioVenta.HasValue ? (decimal)producto.UltimoPrecioVenta : 0,
                                                     Stock = producto.Stock.HasValue ? (int)producto.Stock : 0,

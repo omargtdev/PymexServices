@@ -66,6 +66,7 @@
     <Compile Include="Contracts\IProductoService.cs" />
     <Compile Include="Contracts\IProveedorService.cs" />
     <Compile Include="Contracts\IClienteService.cs" />
+    <Compile Include="Contracts\Operations\IDeleteOperation.cs" />
     <Compile Include="Exceptions\InsufficientPermissionsException.cs" />
     <Compile Include="Contracts\ICategoriaService.cs" />
     <Compile Include="InventarioService.cs" />

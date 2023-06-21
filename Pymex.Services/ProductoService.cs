@@ -105,42 +105,40 @@ namespace Pymex.Services
             return response;
         }
 
-        public ResponseDataContract Eliminar(int id)
+        public ResponseDataContract ActivarPorCodigo(ProductoDC producto)
         {
             var response = new ResponseDataContract();
             response.EsCorrecto = true;
 
             try
             {
-                using (PymexEntities db = new PymexEntities())
+                using(PymexEntities db = new PymexEntities())
                 {
-                    Producto producto = (from productoEntity in db.Producto
-                                         where productoEntity.ProductoID == id
-                                         select productoEntity).FirstOrDefault();
-
-                    if (producto == null)
+                    var productoPorCodigo = db.Producto.Where(p => p.Codigo == producto.Codigo).FirstOrDefault();
+                    if (productoPorCodigo == null)
                     {
                         response.EsCorrecto = false;
-                        response.Mensaje = "El producto a eliminar no existe.";
+                        response.Mensaje = "No existe un producto con ese código";
                         return response;
+
                     }
 
-                    db.Producto.Remove(producto);
+                    productoPorCodigo.Activo = producto.Activo;
+                    productoPorCodigo.UltimoUsuarioModifico = producto.UsuarioAccion;
+                    productoPorCodigo.FechaModificacion = DateTime.Now;
                     db.SaveChanges();
-
-                    response.Mensaje = "Se eliminó correctamente el producto!";
+                    response.Mensaje = $"Se  {(producto.Activo ? "activó" : "desactivó")} el producto correctamente";
                 }
             }
             catch (Exception ex)
             {
-                response.Mensaje = "Ups! Ocurrió un error al eliminar el producto.";
                 response.EsCorrecto = false;
-                // Log Exception ...
+                response.Mensaje = "Ups!. Ocurrio un error al activar/desactivar el producto.";
             }
+
 
             return response;
         }
-
 
         public ResponseWithDataDataContract<IEnumerable<ProductoDC>> Listar()
         {
@@ -157,6 +155,7 @@ namespace Pymex.Services
                                      {
                                          Id = producto.ProductoID,
                                          Codigo = producto.Codigo,
+                                         Activo = producto.Activo,
                                          Descripcion = producto.Descripcion,
                                          UltimoPrecioCompra = producto.UltimoPrecioCompra.HasValue ? (decimal)producto.UltimoPrecioCompra : 0,
                                          UltimoPrecioVenta = producto.UltimoPrecioVenta.HasValue ? (decimal)producto.UltimoPrecioVenta : 0,
@@ -203,6 +202,7 @@ namespace Pymex.Services
                             Id = producto.ProductoID,
                             Codigo = producto.Codigo,
                             Descripcion = producto.Descripcion,
+                            Activo = producto.Activo,
                             CategoriaId = producto.CategoriaID,
                             AlmacenId = producto.AlmacenID,
                             UltimoPrecioCompra = producto.UltimoPrecioCompra.HasValue ? (decimal)producto.UltimoPrecioCompra : 0,
@@ -253,6 +253,7 @@ namespace Pymex.Services
                             Id = producto.ProductoID,
                             Codigo = producto.Codigo,
                             Descripcion = producto.Descripcion,
+                            Activo = producto.Activo,
                             CategoriaId = producto.CategoriaID,
                             AlmacenId = producto.AlmacenID,
                             UltimoPrecioCompra = producto.UltimoPrecioCompra.HasValue ? (decimal)producto.UltimoPrecioCompra : 0,
@@ -278,6 +279,49 @@ namespace Pymex.Services
             {
                 response.EsCorrecto = false;
                 response.Mensaje = "Ups!. Ocurrio un error al obtener el registro.";
+                // Log Exception ...
+            }
+
+            return response;
+        }
+
+        public ResponseWithDataDataContract<IEnumerable<ProductoDC>> ListarSoloActivos()
+        {
+            var response = new ResponseWithDataDataContract<IEnumerable<ProductoDC>>();
+            response.EsCorrecto = true;
+            response.Mensaje = "Datos encontrados.";
+
+            try
+            {
+                using (PymexEntities db = new PymexEntities())
+                {
+                    response.Data = (from producto in db.Producto
+                                     where producto.Activo == true
+                                     select new ProductoDC
+                                     {
+                                         Id = producto.ProductoID,
+                                         Codigo = producto.Codigo,
+                                         Activo = producto.Activo,
+                                         Descripcion = producto.Descripcion,
+                                         UltimoPrecioCompra = producto.UltimoPrecioCompra.HasValue ? (decimal)producto.UltimoPrecioCompra : 0,
+                                         UltimoPrecioVenta = producto.UltimoPrecioVenta.HasValue ? (decimal)producto.UltimoPrecioVenta : 0,
+                                         Stock = producto.Stock.HasValue ? (int)producto.Stock : 0,
+                                         HistorialSeguimiento = new HistorialSeguimientoDC
+                                         {
+                                             FechaRegistro = producto.FechaRegistro,
+                                             UsuarioRegistro = producto.UsuarioRegistro,
+                                             FechaModificacion = producto.FechaModificacion,
+                                             UltimoUsuarioModificacion = producto.UltimoUsuarioModifico
+                                         },
+                                         CategoriaId = producto.CategoriaID,
+                                         AlmacenId = producto.AlmacenID
+                                     }).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                response.EsCorrecto = false;
+                response.Mensaje = "Ups!. Ocurrio un error al obtener los registros.";
                 // Log Exception ...
             }
 

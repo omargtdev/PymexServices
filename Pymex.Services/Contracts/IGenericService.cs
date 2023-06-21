@@ -23,8 +23,6 @@ namespace Pymex.Services.Contracts
         [OperationContract]
         ResponseDataContract Actualizar(T entity);
 
-        [OperationContract]
-        ResponseDataContract Eliminar(int id);
     }
 
     [DataContract]
