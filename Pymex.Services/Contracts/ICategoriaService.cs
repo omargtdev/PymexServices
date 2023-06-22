@@ -18,7 +18,7 @@ namespace Pymex.Services.Contracts
     [DataContract]
     public class CategoriaDC
     {
-        [DataMember] public int Id { get; set; }
-        [DataMember] public string Descripcion { get; set; }
+        [DataMember(Order = 1)] public int Id { get; set; }
+        [DataMember(Order = 2)] public string Descripcion { get; set; }
     }
 }

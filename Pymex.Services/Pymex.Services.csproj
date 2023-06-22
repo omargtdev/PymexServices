@@ -72,11 +72,14 @@
     <Compile Include="InventarioService.cs" />
     <Compile Include="Contracts\IReportesService.cs" />
     <Compile Include="Contracts\IUsuarioService.cs" />
+    <Compile Include="Mappers\AlmacenMapper.cs" />
+    <Compile Include="Mappers\CategoriaMapper.cs" />
     <Compile Include="Mappers\ClienteMapper.cs" />
     <Compile Include="Mappers\Contracts\IGenericMapper.cs" />
     <Compile Include="Mappers\Contracts\IProductoMapper.cs" />
     <Compile Include="Mappers\ProductoMapper.cs" />
     <Compile Include="Mappers\ProveedorMapper.cs" />
+    <Compile Include="Mappers\UsuarioMapper.cs" />
     <Compile Include="Models\Almacen.cs">
       <DependentUpon>Pymex.tt</DependentUpon>
     </Compile>

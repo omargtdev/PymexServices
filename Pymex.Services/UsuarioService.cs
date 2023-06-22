@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.Text;
 using Pymex.Services.Contracts;
 using Pymex.Services.Exceptions;
+using Pymex.Services.Mappers;
+using Pymex.Services.Mappers.Contracts;
 using Pymex.Services.Models;
-using Pymex.Services.ValueObjects;
 
 namespace Pymex.Services
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "UsuarioService" in both code and config file together.
     public class UsuarioService : IUsuarioService
     {
+
+        private readonly IGenericMapper<Usuario, UsuarioDC> _mapper = new UsuarioMapper();
+
         public ResponseDataContract ActualizarUsuario(UsuarioDC usuarioDC)
         {
             var response = new ResponseDataContract();
-            response.EsCorrecto = true;
 
             try
             {
@@ -29,24 +29,20 @@ namespace Pymex.Services
 
                     if (usuario == null)
                     {
-                        response.EsCorrecto = false;
                         response.Mensaje = "El usuario a actualizar no existe.";
                         return response;
                     }
 
-                    usuario.Nombre = usuarioDC.Nombre;
-                    usuario.Apellidos = usuarioDC.Apellidos;
-                    usuario.PerfilID = (short)usuarioDC.Perfil;
-
+                    _mapper.ToEditEntity(usuario, usuarioDC);
                     db.SaveChanges();
-
-                    response.Mensaje = "Se actualizó el usuario correctamente";
                 }
+                
+                response.Mensaje = "Se actualizó el usuario correctamente.";
+                response.EsCorrecto = true;
             }
             catch (Exception ex)
             {
                 response.Mensaje = "Ups! Ocurrió un error al actualizar el usuario.";
-                response.EsCorrecto = false;
                 // Log Exception ...
             }
 
@@ -57,36 +53,27 @@ namespace Pymex.Services
         {
 
             var response = new ResponseWithDataDataContract<UsuarioDC>();
-            response.EsCorrecto = true;
 
             try
             {
                 using (PymexEntities db = new PymexEntities())
                 {
                     Usuario usuario = db.Usuario.Where(u => u.UsuarioLogin == username && passwordEncriptado == u.Clave).FirstOrDefault();
-                    if (usuario != null)
+                    if (usuario == null)
                     {
-                        response.Mensaje = "Autentificación correcta!";
-                        // Obteniendo datos del usuario
-                        response.Data = new UsuarioDC
-                        {
-                            Id = usuario.UsuarioID,
-                            Login = usuario.UsuarioLogin,
-                            Nombre = usuario.Nombre,
-                            Apellidos = usuario.Apellidos,
-                            Perfil  = (ValueObjects.Perfil) usuario.PerfilID
-                        };
-                    }
-                    else
-                    {
-                        response.EsCorrecto = false;
                         response.Mensaje = "Credenciales incorrectas.";
+                        return response;
                     }
+
+                    // Obteniendo datos del usuario
+                    response.Data = _mapper.ToDataContract(usuario);
                 }
+
+                response.Mensaje = "Autentificación correcta!";
+                response.EsCorrecto = true;
             }
             catch (Exception ex)
             {
-                response.EsCorrecto = false;
                 response.Mensaje = "Ups!. Ocurrio un error al tratar de autenticarse.";
                 // Log Exception ...
             }
@@ -97,7 +84,6 @@ namespace Pymex.Services
         public ResponseWithDataDataContract<IEnumerable<UsuarioDC>> ObtenerUsuarios(string usuarioSolicitante)
         {
             var response = new ResponseWithDataDataContract<IEnumerable<UsuarioDC>>();
-            response.EsCorrecto = false;
 
             try
             {
@@ -117,17 +103,12 @@ namespace Pymex.Services
 
                     // Obteniendo los usuarios
                     response.Data = (from usuarioEntity in db.Usuario
-                                    select new UsuarioDC
-                                    {
-                                        Id = usuarioEntity.UsuarioID,
-                                        Login = usuario.UsuarioLogin,
-                                        Nombre = usuario.Nombre,
-                                        Apellidos = usuario.Apellidos,
-                                        Perfil = (ValueObjects.Perfil)usuario.PerfilID
-                                    }).ToList();
-                    response.EsCorrecto = true;
-
+                                     select usuarioEntity).ToList()
+                                    .Select(u => _mapper.ToDataContract(u));
                 }
+
+                response.Mensaje = "Datos encontrados.";
+                response.EsCorrecto = true;
                
             }
             catch (InsufficientPermissionsException ex)

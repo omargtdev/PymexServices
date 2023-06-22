@@ -7,6 +7,8 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 using Pymex.Services.Contracts;
+using Pymex.Services.Mappers;
+using Pymex.Services.Mappers.Contracts;
 using Pymex.Services.Models;
 using Pymex.Services.Utils;
 using Pymex.Services.ValueObjects;
@@ -16,64 +18,62 @@ namespace Pymex.Services
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "CategoriaService" in both code and config file together.
     public class CategoriaService : ICategoriaService
     {
-        public ResponseDataContract Actualizar(CategoriaDC entity)
+
+        private readonly IGenericMapper<Categoria, CategoriaDC> _mapper = new CategoriaMapper();
+
+        public ResponseDataContract Actualizar(CategoriaDC dataContract)
         {
             var response = new ResponseDataContract();
-            response.EsCorrecto = true;
 
             try
             {
                 using (PymexEntities db = new PymexEntities())
                 {
                     Categoria categoria = (from categoriaEntity in db.Categoria
-                                           where categoriaEntity.CategoriaID == entity.Id
+                                           where categoriaEntity.CategoriaID == dataContract.Id
                                            select categoriaEntity).FirstOrDefault();
 
                     if (categoria == null)
                     {
-                        response.EsCorrecto = false;
-                        response.Mensaje = "La categoria a actualizar no existe.";
+                        response.Mensaje = "La categoría a actualizar no existe.";
                         return response;
                     }
 
-                    categoria.Descripcion = entity.Descripcion;
+                    _mapper.ToEditEntity(categoria, dataContract);
                     db.SaveChanges();
-                    response.Mensaje = "Se actualizó correctamente la categoria!";
                 }
+
+                response.Mensaje = "Se actualizó correctamente la categoría.";
+                response.EsCorrecto = true;
             }
             catch (Exception ex)
             {
-                response.Mensaje = "Ups! Ocurrió un error al actualizar la categoria.";
-                response.EsCorrecto = false;
+                response.Mensaje = "Ups! Ocurrió un error al actualizar la categoría.";
                 // Log Exception ...
             }
 
             return response;
         }
 
-        public ResponseDataContract Crear(CategoriaDC entity)
+        public ResponseDataContract Crear(CategoriaDC dataContract)
         {
             var response = new ResponseDataContract();
-            response.EsCorrecto = true;
 
             try
             {
                 using (PymexEntities db = new PymexEntities())
                 {
-                    Categoria categoria = new Categoria()
-                    {
-                        Descripcion = entity.Descripcion
-                    };
-
+                    var categoria = _mapper.ToCreateEntity(dataContract);
                     db.Categoria.Add(categoria);
                     db.SaveChanges();
-                    response.Mensaje = "Se creó correctamente la categoria!";
                 }
+
+                response.Mensaje = "Se creó correctamente la categoria!";
+                response.EsCorrecto = true;
             }
             catch (Exception ex)
             {
-                response.Mensaje = "Ups! Ocurrió un error al insertar la categoria.";
-                response.EsCorrecto = false;
+                response.Mensaje = "Ups! Ocurrió un error al insertar la categoría.";
                 // Log Exception ...
             }
 
@@ -83,7 +83,6 @@ namespace Pymex.Services
         public ResponseDataContract Eliminar(int id)
         {
             var response = new ResponseDataContract();
-            response.EsCorrecto = true;
 
             try
             {
@@ -95,16 +94,16 @@ namespace Pymex.Services
 
                     if (categoria == null)
                     {
-                        response.EsCorrecto = false;
-                        response.Mensaje = "La categoria a eliminar no existe.";
+                        response.Mensaje = "La categoría a eliminar no existe.";
                         return response;
                     }
 
                     db.Categoria.Remove(categoria);
                     db.SaveChanges();
-
-                    response.Mensaje = "Se eliminó correctamente la categoria!";
                 }
+
+                response.Mensaje = "Se eliminó correctamente la categoría!";
+                response.EsCorrecto = true;
             }
             catch(DbUpdateException ex)
             {
@@ -114,15 +113,13 @@ namespace Pymex.Services
                 {
                     if ((sqlException as SqlException).Number == SqlExceptionNumbers.ForeignKey)
                     {
-                        response.EsCorrecto = false;
-                        response.Mensaje = "No se puede eliminar una categoria en los cuales tiene productos registrados.";
+                        response.Mensaje = "No se puede eliminar una categoría en el cual tiene productos registrados.";
                     }
                 }
             }
             catch (Exception ex)
             {
-                response.Mensaje = "Ups! Ocurrió un error al eliminar la categoria.";
-                response.EsCorrecto = false;
+                response.Mensaje = "Ups! Ocurrió un error al eliminar la categoría.";
                 // Log Exception ...
             }
 
@@ -132,25 +129,22 @@ namespace Pymex.Services
         public ResponseWithDataDataContract<IEnumerable<CategoriaDC>> Listar()
         {
             var response = new ResponseWithDataDataContract<IEnumerable<CategoriaDC>>();
-            response.EsCorrecto = true;
-            response.Mensaje = "Datos encontrados.";
 
             try
             {
                 using (PymexEntities db = new PymexEntities())
                 {
                     response.Data = (from categoria in db.Categoria
-                                     select new CategoriaDC
-                                     {
-                                        Id = categoria.CategoriaID,
-                                        Descripcion = categoria.Descripcion
-                                     }).ToList();
+                                     select categoria).ToList()
+                                     .Select(c => _mapper.ToDataContract(c));
                 }
+                
+                response.Mensaje = "Datos encontrados.";
+                response.EsCorrecto = true;
             }
             catch (Exception ex)
             {
-                response.EsCorrecto = false;
-                response.Mensaje = "Ups!. Ocurrio un error al obtener los registros.";
+                response.Mensaje = "Ups! Ocurrió un error al obtener los registros.";
                 // Log Exception ...
             }
 
@@ -160,8 +154,6 @@ namespace Pymex.Services
         public ResponseWithDataDataContract<CategoriaDC> ObtenerPorId(int id)
         {
             var response = new ResponseWithDataDataContract<CategoriaDC>();
-            response.EsCorrecto = true;
-            response.Mensaje = "Dato encontrado.";
 
             try
             {
@@ -170,24 +162,19 @@ namespace Pymex.Services
                     var categoria = db.Categoria.Where(c => c.CategoriaID == id).FirstOrDefault();
                     if(categoria == null)
                     {
-                        response.EsCorrecto = false;
-                        response.Mensaje = "No existe la categoria con ese id";
+                        response.Mensaje = "No existe la categoría con ese id";
                         return response;
                     }
 
-                    response.Data = new CategoriaDC
-                    {
-                        Id = categoria.CategoriaID,
-                        Descripcion = categoria.Descripcion
-                    };
-
-                    response.Mensaje = "Se encontró la categoria";
+                    response.Data = _mapper.ToDataContract(categoria);
                 }
+
+                response.Mensaje = "Dato encontrado.";
+                response.EsCorrecto = true;
             }
             catch (Exception ex)
             {
-                response.EsCorrecto = false;
-                response.Mensaje = "Ups!. Ocurrio un error al obtener el registro.";
+                response.Mensaje = "Ups! Ocurrió un error al obtener el registro.";
                 // Log Exception ...
             }
 
