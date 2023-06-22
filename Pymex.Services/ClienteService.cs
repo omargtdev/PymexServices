@@ -1,103 +1,90 @@
 ﻿using Pymex.Services.Contracts;
+using Pymex.Services.Mappers;
+using Pymex.Services.Mappers.Contracts;
 using Pymex.Services.Models;
-using Pymex.Services.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.Text;
 
 namespace Pymex.Services
 {
     public class ClienteService : IClienteService
     {
-        public ResponseDataContract Actualizar(ClienteDC entity)
+
+        private readonly IGenericMapper<Cliente, ClienteDC> _mapper = new ClienteMapper();
+
+        public ResponseDataContract Actualizar(ClienteDC dataContract)
         {
             var response = new ResponseDataContract();
-            response.EsCorrecto = true;
 
             try
             {
                 using (PymexEntities db = new PymexEntities())
                 {
                     Cliente cliente = (from clienteEntity in db.Cliente
-                                         where clienteEntity.ClienteID == entity.Id
+                                         where clienteEntity.ClienteID == dataContract.Id
                                          select clienteEntity).FirstOrDefault();
 
                     if (cliente == null)
                     {
-                        response.EsCorrecto = false;
                         response.Mensaje = "El cliente a actualizar no existe.";
                         return response;
                     }
 
-                    var clientePorNumeroDocumento = db.Cliente.Where(c => c.NumeroDocumento == entity.NumeroDocumento && c.ClienteID != entity.Id).FirstOrDefault();
+                    var clientePorNumeroDocumento = db.Cliente.Where(c => c.NumeroDocumento == dataContract.NumeroDocumento && c.ClienteID != dataContract.Id).FirstOrDefault();
                     if (clientePorNumeroDocumento != null)
                     {
-                        response.EsCorrecto = false;
-                        response.Mensaje = "Ya existe un cliente con ese número de documento";
+                        response.Mensaje = "Ya existe un cliente con ese número de documento.";
                         return response;
 
                     }
 
-                    cliente.TipoDocumento = (byte)entity.TipoDocumento;
-                    cliente.NumeroDocumento = entity.NumeroDocumento;
-                    cliente.NombreCompleto = entity.NombreCompleto;
-                    cliente.UltimoUsuarioModifico = entity.UsuarioAccion;
-                    cliente.FechaModificacion = DateTime.Now;
-
+                    _mapper.ToEditEntity(cliente, dataContract);
                     db.SaveChanges();
 
-                    response.Mensaje = "Se actualizó el cliente correctamente";
                 }
+
+                response.Mensaje = "Se actualizó el cliente correctamente.";
+                response.EsCorrecto = true;
             }
             catch (Exception ex)
             {
                 response.Mensaje = "Ups! Ocurrió un error al actualizar el cliente.";
-                response.EsCorrecto = false;
                 // Log Exception ...
             }
 
             return response;
         }
 
-        public ResponseDataContract Crear(ClienteDC entity)
+        public ResponseDataContract Crear(ClienteDC dataContract)
         {
             var response = new ResponseDataContract();
-            response.EsCorrecto = true;
 
             try
             {
                 using (PymexEntities db = new PymexEntities())
                 {
 
-                    var clientePorNumeroDocumento = db.Cliente.Where(c => c.NumeroDocumento == entity.NumeroDocumento).FirstOrDefault();
+                    var clientePorNumeroDocumento = db.Cliente.Where(c => c.NumeroDocumento == dataContract.NumeroDocumento).FirstOrDefault();
                     if (clientePorNumeroDocumento != null)
                     {
-                        response.EsCorrecto = false;
-                        response.Mensaje = "Ya existe un cliente con ese número de documento";
+                        response.Mensaje = "Ya existe un cliente con ese número de documento.";
                         return response;
 
                     }
 
-                    Cliente cliente = new Cliente();
-                    cliente.TipoDocumento = (byte)entity.TipoDocumento;
-                    cliente.NumeroDocumento = entity.NumeroDocumento;
-                    cliente.NombreCompleto = entity.NombreCompleto;
-                    cliente.UsuarioRegistro = entity.UsuarioAccion;
-                    cliente.FechaRegistro = DateTime.Now;
-
+                    var cliente = _mapper.ToCreateEntity(dataContract);
                     db.Cliente.Add(cliente);
                     db.SaveChanges();
 
-                    response.Mensaje = "Se agregó el cliente correctamente";
                 }
+
+                response.Mensaje = "Se agregó el cliente correctamente";
+                response.EsCorrecto = true;
             }
             catch (Exception ex)
             {
                 response.Mensaje = "Ups! Ocurrió un error al insertar el cliente.";
-                response.EsCorrecto = false;
                 // Log Exception ...
             }
 
@@ -107,7 +94,6 @@ namespace Pymex.Services
         public ResponseDataContract Eliminar(int id)
         {
             var response = new ResponseDataContract();
-            response.EsCorrecto = true;
 
             try
             {
@@ -126,14 +112,14 @@ namespace Pymex.Services
 
                     db.Cliente.Remove(cliente);
                     db.SaveChanges();
-
-                    response.Mensaje = "Se eliminó correctamente el cliente!";
                 }
+
+                response.Mensaje = "Se eliminó correctamente el cliente!";
+                response.EsCorrecto = true;
             }
             catch (Exception ex)
             {
-                response.Mensaje = "Ups! Ocurrió un error al insertar el cliente.";
-                response.EsCorrecto = false;
+                response.Mensaje = "Ups! Ocurrió un error al eliminar el cliente.";
                 // Log Exception ...
             }
 
@@ -143,34 +129,22 @@ namespace Pymex.Services
         public ResponseWithDataDataContract<IEnumerable<ClienteDC>> Listar()
         {
             var response = new ResponseWithDataDataContract<IEnumerable<ClienteDC>>();
-            response.EsCorrecto = true;
-            response.Mensaje = "Datos encontrados.";
 
             try
             {
                 using (PymexEntities db = new PymexEntities())
                 {
                     response.Data = (from cliente in db.Cliente
-                                     select new ClienteDC
-                                     {
-                                         Id = cliente.ClienteID,
-                                         TipoDocumento = (TipoDocumento)cliente.TipoDocumento,
-                                         NumeroDocumento = cliente.NumeroDocumento,
-                                         NombreCompleto = cliente.NombreCompleto,
-                                         HistorialSeguimiento = new HistorialSeguimientoDC
-                                         {
-                                             FechaRegistro = cliente.FechaRegistro,
-                                             UsuarioRegistro = cliente.UsuarioRegistro,
-                                             FechaModificacion = cliente.FechaModificacion,
-                                             UltimoUsuarioModificacion = cliente.UltimoUsuarioModifico
-                                         }
-                                     }).ToList();
+                                     select cliente).ToList()
+                                     .Select(c => _mapper.ToDataContract(c)); 
                 }
+                
+                response.Mensaje = "Datos encontrados.";
+                response.EsCorrecto = true;
             }
             catch (Exception ex)
             {
-                response.EsCorrecto = false;
-                response.Mensaje = "Ups!. Ocurrio un error al obtener los registros.";
+                response.Mensaje = "Ups! Ocurrió un error al obtener los registros.";
                 // Log Exception ...
             }
 
@@ -180,43 +154,28 @@ namespace Pymex.Services
         public ResponseWithDataDataContract<ClienteDC> ObtenerPorId(int id)
         {
             var response = new ResponseWithDataDataContract<ClienteDC>();
-            response.EsCorrecto = true;
 
             try
             {
                 using (PymexEntities db = new PymexEntities())
                 {
                     Cliente cliente = db.Cliente.Where(p => p.ClienteID == id).FirstOrDefault();
-                    if (cliente != null)
+                    if (cliente == null)
                     {
-                        response.Mensaje = "Dato encontrado.";
-                        // Obteniendo datos del cliente
-                        response.Data = new ClienteDC
-                        {
-                            Id = cliente.ClienteID,
-                            TipoDocumento = (TipoDocumento)cliente.TipoDocumento,
-                            NumeroDocumento = cliente.NumeroDocumento,
-                            NombreCompleto = cliente.NombreCompleto,
-                            HistorialSeguimiento = new HistorialSeguimientoDC 
-                            {
-                                FechaRegistro = cliente.FechaRegistro,
-                                UsuarioRegistro = cliente.UsuarioRegistro,
-                                FechaModificacion = cliente.FechaModificacion,
-                                UltimoUsuarioModificacion = cliente.UltimoUsuarioModifico
-                            }
-                        };
-                    }
-                    else
-                    {
-                        response.EsCorrecto = false;
                         response.Mensaje = "No existe el registro.";
+                        return response;
                     }
+                    
+                    // Obteniendo datos del cliente
+                    response.Data = _mapper.ToDataContract(cliente);
                 }
+
+                response.Mensaje = "Dato encontrado.";
+                response.EsCorrecto = true;
             }
             catch (Exception ex)
             {
-                response.EsCorrecto = false;
-                response.Mensaje = "Ups!. Ocurrio un error al obtener el registro.";
+                response.Mensaje = "Ups! Ocurrio un error al obtener el registro.";
                 // Log Exception ...
             }
 

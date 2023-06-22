@@ -3,139 +3,120 @@ using Pymex.Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Pymex.Services.ValueObjects;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.Text;
+using Pymex.Services.Mappers;
+using Pymex.Services.Mappers.Contracts;
 
 namespace Pymex.Services
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "ProductoService" in both code and config file together.
     public class ProductoService : IProductoService
     {
-        public ResponseDataContract Actualizar(ProductoDC entity)
+
+        private readonly IProductoMapper _mapper = new ProductoMapper();
+
+        public ResponseDataContract Actualizar(ProductoDC dataContract)
         {
             var response = new ResponseDataContract();
-            response.EsCorrecto = true;
 
             try
             {
                 using (PymexEntities db = new PymexEntities())
                 {
                     Producto producto = (from productoEntity in db.Producto
-                                         where productoEntity.ProductoID == entity.Id
+                                         where productoEntity.ProductoID == dataContract.Id
                                          select productoEntity).FirstOrDefault();
 
                     if (producto == null)
                     {
-                        response.EsCorrecto = false;
                         response.Mensaje = "El producto a actualizar no existe.";
                         return response;
                     }
 
-                    var productoPorCodigo = db.Producto.Where(p => p.Codigo == entity.Codigo && p.ProductoID != entity.Id).FirstOrDefault();
+                    var productoPorCodigo = db.Producto.Where(p => p.Codigo == dataContract.Codigo && p.ProductoID != dataContract.Id).FirstOrDefault();
                     if (productoPorCodigo != null)
                     {
-                        response.EsCorrecto = false;
                         response.Mensaje = "Ya existe un producto con ese código";
                         return response;
 
                     }
 
-                    producto.Codigo = entity.Codigo;
-                    producto.Descripcion = entity.Descripcion;
-                    producto.CategoriaID = entity.CategoriaId;
-                    producto.AlmacenID = entity.AlmacenId;
-                    producto.UltimoUsuarioModifico = entity.UsuarioAccion;
-                    producto.FechaModificacion = DateTime.Now;
+                    _mapper.ToEditEntity(producto, dataContract);
 
                     db.SaveChanges();
-
-                    response.Mensaje = "Se actualizó el producto correctamente";
                 }
+
+                response.Mensaje = "Se actualizó el producto correctamente";
+                response.EsCorrecto = true;
             }
             catch (Exception ex)
             {
                 response.Mensaje = "Ups! Ocurrió un error al actualizar el producto.";
-                response.EsCorrecto = false;
                 // Log Exception ...
             }
 
             return response;
         }
 
-        public ResponseDataContract Crear(ProductoDC entity)
+        public ResponseDataContract Crear(ProductoDC dataContract)
         {
             var response = new ResponseDataContract();
-            response.EsCorrecto = true;
 
             try
             {
                 using (PymexEntities db = new PymexEntities())
                 {
-                    var productoPorCodigo = db.Producto.Where(p => p.Codigo == entity.Codigo).FirstOrDefault();
+                    var productoPorCodigo = db.Producto.Where(p => p.Codigo == dataContract.Codigo).FirstOrDefault();
                     if (productoPorCodigo != null)
                     {
-                        response.EsCorrecto = false;
-                        response.Mensaje = "Ya existe un producto con ese código";
+                        response.Mensaje = "Ya existe un producto con ese código.";
                         return response;
 
                     }
 
-                    Producto producto = new Producto();
-                    producto.ProductoID = 0;
-                    producto.Codigo = entity.Codigo;
-                    producto.Descripcion = entity.Descripcion;
-                    producto.CategoriaID = entity.CategoriaId;
-                    producto.AlmacenID = entity.AlmacenId;
-                    producto.UsuarioRegistro = entity.UsuarioAccion;
-                    producto.FechaRegistro = DateTime.Now;
-
+                    var producto = _mapper.ToCreateEntity(dataContract);
                     db.Producto.Add(producto);
                     db.SaveChanges();
                 }
+
+                response.Mensaje = "Se creó el cliente correctamente!";
+                response.EsCorrecto = true;
             }
             catch (Exception ex)
             {
                 response.Mensaje = "Ups! Ocurrió un error al insertar el producto.";
-                response.EsCorrecto = false;
                 // Log Exception ...
             }
 
             return response;
         }
 
-        public ResponseDataContract ActivarPorCodigo(ProductoDC producto)
+        public ResponseDataContract ActivarPorCodigo(ProductoDC dataContract)
         {
             var response = new ResponseDataContract();
-            response.EsCorrecto = true;
 
             try
             {
                 using(PymexEntities db = new PymexEntities())
                 {
-                    var productoPorCodigo = db.Producto.Where(p => p.Codigo == producto.Codigo).FirstOrDefault();
+                    var productoPorCodigo = db.Producto.Where(p => p.Codigo == dataContract.Codigo).FirstOrDefault();
                     if (productoPorCodigo == null)
                     {
-                        response.EsCorrecto = false;
-                        response.Mensaje = "No existe un producto con ese código";
+                        response.Mensaje = "No existe un producto con ese código.";
                         return response;
 
                     }
 
-                    productoPorCodigo.Activo = producto.Activo;
-                    productoPorCodigo.UltimoUsuarioModifico = producto.UsuarioAccion;
-                    productoPorCodigo.FechaModificacion = DateTime.Now;
+                    _mapper.ToActivateProduct(productoPorCodigo, dataContract);
                     db.SaveChanges();
-                    response.Mensaje = $"Se  {(producto.Activo ? "activó" : "desactivó")} el producto correctamente";
                 }
+                
+                response.Mensaje = $"Se  {(dataContract.Activo ? "activó" : "desactivó")} el producto correctamente.";
+                response.EsCorrecto = true;
             }
             catch (Exception ex)
             {
-                response.EsCorrecto = false;
-                response.Mensaje = "Ups!. Ocurrio un error al activar/desactivar el producto.";
+                response.Mensaje = $"Ups! Ocurrió un error al {(dataContract.Activo ? "activar" : "desactivar")} el producto.";
             }
-
 
             return response;
         }
@@ -143,39 +124,22 @@ namespace Pymex.Services
         public ResponseWithDataDataContract<IEnumerable<ProductoDC>> Listar()
         {
             var response = new ResponseWithDataDataContract<IEnumerable<ProductoDC>>();
-            response.EsCorrecto = true;
-            response.Mensaje = "Datos encontrados.";
 
             try
             {
                 using (PymexEntities db = new PymexEntities())
                 {
                     response.Data = (from producto in db.Producto
-                                     select new ProductoDC
-                                     {
-                                         Id = producto.ProductoID,
-                                         Codigo = producto.Codigo,
-                                         Activo = producto.Activo,
-                                         Descripcion = producto.Descripcion,
-                                         UltimoPrecioCompra = producto.UltimoPrecioCompra.HasValue ? (decimal)producto.UltimoPrecioCompra : 0,
-                                         UltimoPrecioVenta = producto.UltimoPrecioVenta.HasValue ? (decimal)producto.UltimoPrecioVenta : 0,
-                                         Stock = producto.Stock.HasValue ? (int)producto.Stock : 0,
-                                         HistorialSeguimiento = new HistorialSeguimientoDC
-                                         {
-                                             FechaRegistro = producto.FechaRegistro,
-                                             UsuarioRegistro = producto.UsuarioRegistro,
-                                             FechaModificacion = producto.FechaModificacion,
-                                             UltimoUsuarioModificacion = producto.UltimoUsuarioModifico
-                                         },
-                                         CategoriaId = producto.CategoriaID,
-                                         AlmacenId = producto.AlmacenID
-                                     }).ToList();
+                                     select producto).ToList()
+                                      .Select(p => _mapper.ToDataContract(p));
                 }
+
+                response.Mensaje = "Datos encontrados.";
+                response.EsCorrecto = true;
             }
             catch (Exception ex)
             {
-                response.EsCorrecto = false;
-                response.Mensaje = "Ups!. Ocurrio un error al obtener los registros.";
+                response.Mensaje = "Ups! Ocurrió un error al obtener los registros.";
                 // Log Exception ...
             }
 
@@ -185,48 +149,28 @@ namespace Pymex.Services
         public ResponseWithDataDataContract<ProductoDC> ObtenerPorCodigo(string codigo)
         {
             var response = new ResponseWithDataDataContract<ProductoDC>();
-            response.EsCorrecto = true;
 
             try
             {
                 using (PymexEntities db = new PymexEntities())
                 {
-                    //Producto producto = db.Producto.Find(id); // Find: Busca primera en la memoria cache de EF, antes de hacer el query
                     Producto producto = db.Producto.Where(p => p.Codigo == codigo).FirstOrDefault();
-                    if (producto != null)
+                    if (producto == null)
                     {
-                        response.Mensaje = "Dato encontrado.";
-                        // Obteniendo datos del producto
-                        response.Data = new ProductoDC
-                        {
-                            Id = producto.ProductoID,
-                            Codigo = producto.Codigo,
-                            Descripcion = producto.Descripcion,
-                            Activo = producto.Activo,
-                            CategoriaId = producto.CategoriaID,
-                            AlmacenId = producto.AlmacenID,
-                            UltimoPrecioCompra = producto.UltimoPrecioCompra.HasValue ? (decimal)producto.UltimoPrecioCompra : 0,
-                            UltimoPrecioVenta = producto.UltimoPrecioVenta.HasValue ? (decimal)producto.UltimoPrecioVenta : 0,
-                            Stock = producto.Stock.HasValue ? (int)producto.Stock : 0,
-                            HistorialSeguimiento = new HistorialSeguimientoDC {
-                                FechaRegistro = producto.FechaRegistro,
-                                UsuarioRegistro = producto.UsuarioRegistro,
-                                FechaModificacion = producto.FechaModificacion,
-                                UltimoUsuarioModificacion = producto.UltimoUsuarioModifico
-                            }
-                        };
-                    }
-                    else
-                    {
-                        response.EsCorrecto = false;
                         response.Mensaje = "No existe el registro.";
+                        return response;
                     }
+
+                    // Obteniendo datos del producto
+                    response.Data = _mapper.ToDataContract(producto);
                 }
+
+                response.Mensaje = "Dato encontrado.";
+                response.EsCorrecto = true;
             }
             catch (Exception ex)
             {
-                response.EsCorrecto = false;
-                response.Mensaje = "Ups!. Ocurrio un error al obtener el registro.";
+                response.Mensaje = "Ups! Ocurrió un error al obtener el registro.";
                 // Log Exception ...
             }
 
@@ -236,48 +180,27 @@ namespace Pymex.Services
         public ResponseWithDataDataContract<ProductoDC> ObtenerPorId(int id)
         {
             var response = new ResponseWithDataDataContract<ProductoDC>();
-            response.EsCorrecto = true;
 
             try
             {
                 using (PymexEntities db = new PymexEntities())
                 {
-                    //Producto producto = db.Producto.Find(id); // Find: Busca primera en la memoria cache de EF, antes de hacer el query
                     Producto producto = db.Producto.Where(p => p.ProductoID == id).FirstOrDefault();
-                    if (producto != null)
+                    if (producto == null)
                     {
-                        response.Mensaje = "Dato encontrado.";
-                        // Obteniendo datos del producto
-                        response.Data = new ProductoDC
-                        {
-                            Id = producto.ProductoID,
-                            Codigo = producto.Codigo,
-                            Descripcion = producto.Descripcion,
-                            Activo = producto.Activo,
-                            CategoriaId = producto.CategoriaID,
-                            AlmacenId = producto.AlmacenID,
-                            UltimoPrecioCompra = producto.UltimoPrecioCompra.HasValue ? (decimal)producto.UltimoPrecioCompra : 0,
-                            UltimoPrecioVenta = producto.UltimoPrecioVenta.HasValue ? (decimal)producto.UltimoPrecioVenta : 0,
-                            Stock = producto.Stock.HasValue ? (int)producto.Stock : 0,
-                            HistorialSeguimiento = new HistorialSeguimientoDC
-                            {
-                                FechaRegistro = producto.FechaRegistro,
-                                UsuarioRegistro = producto.UsuarioRegistro,
-                                FechaModificacion = producto.FechaModificacion,
-                                UltimoUsuarioModificacion = producto.UltimoUsuarioModifico
-                            }
-                        };
-                    }
-                    else
-                    {
-                        response.EsCorrecto = false;
                         response.Mensaje = "No existe el registro.";
+                        return response;
                     }
+
+                    // Obteniendo datos del producto
+                    response.Data = _mapper.ToDataContract(producto);
                 }
+
+                response.Mensaje = "Dato encontrado.";
+                response.EsCorrecto = true;
             }
             catch (Exception ex)
             {
-                response.EsCorrecto = false;
                 response.Mensaje = "Ups!. Ocurrio un error al obtener el registro.";
                 // Log Exception ...
             }
@@ -288,8 +211,6 @@ namespace Pymex.Services
         public ResponseWithDataDataContract<IEnumerable<ProductoDC>> ListarSoloActivos()
         {
             var response = new ResponseWithDataDataContract<IEnumerable<ProductoDC>>();
-            response.EsCorrecto = true;
-            response.Mensaje = "Datos encontrados.";
 
             try
             {
@@ -297,30 +218,15 @@ namespace Pymex.Services
                 {
                     response.Data = (from producto in db.Producto
                                      where producto.Activo == true
-                                     select new ProductoDC
-                                     {
-                                         Id = producto.ProductoID,
-                                         Codigo = producto.Codigo,
-                                         Activo = producto.Activo,
-                                         Descripcion = producto.Descripcion,
-                                         UltimoPrecioCompra = producto.UltimoPrecioCompra.HasValue ? (decimal)producto.UltimoPrecioCompra : 0,
-                                         UltimoPrecioVenta = producto.UltimoPrecioVenta.HasValue ? (decimal)producto.UltimoPrecioVenta : 0,
-                                         Stock = producto.Stock.HasValue ? (int)producto.Stock : 0,
-                                         HistorialSeguimiento = new HistorialSeguimientoDC
-                                         {
-                                             FechaRegistro = producto.FechaRegistro,
-                                             UsuarioRegistro = producto.UsuarioRegistro,
-                                             FechaModificacion = producto.FechaModificacion,
-                                             UltimoUsuarioModificacion = producto.UltimoUsuarioModifico
-                                         },
-                                         CategoriaId = producto.CategoriaID,
-                                         AlmacenId = producto.AlmacenID
-                                     }).ToList();
+                                     select producto).ToList()
+                                     .Select(p => _mapper.ToDataContract(p));
                 }
+
+                response.Mensaje = "Datos encontrados.";
+                response.EsCorrecto = true;
             }
             catch (Exception ex)
             {
-                response.EsCorrecto = false;
                 response.Mensaje = "Ups!. Ocurrio un error al obtener los registros.";
                 // Log Exception ...
             }

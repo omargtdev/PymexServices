@@ -1,29 +1,33 @@
-﻿using Pymex.Services.Contracts.Operations;
-using Pymex.Services.Models;
-using Pymex.Services.ValueObjects;
-using System;
+﻿using Pymex.Services.ValueObjects;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.Text;
 
 namespace Pymex.Services.Contracts
 {
     [ServiceContract]
     public interface IProductoService : IGenericService<ProductoDC>
     {
+        /// <summary>
+        ///     Obtiene el producto por su código. 
+        /// </summary>
+        /// <param name="codigo">El código por el cual buscar.</param>
+        /// <returns>El producto encontrado.</returns>
         [OperationContract]
         ResponseWithDataDataContract<ProductoDC> ObtenerPorCodigo(string codigo);
 
+        /// <summary>
+        ///     Obtiene la lista de los productos que estén activos.
+        /// </summary>
+        /// <returns>Una lista con los productos activos.</returns>
         [OperationContract]
         ResponseWithDataDataContract<IEnumerable<ProductoDC>> ListarSoloActivos();
 
         /// <summary>
         ///     Activa/desactiva un producto por su codigo.
         /// </summary>
-        /// <param name="producto">El producto espera que tenga 3 valores: el codigo, el usuario que ejecuta y el valor de Activo (true/false)</param>
-        /// <returns>La respuesta de la operación</returns>
+        /// <param name="producto">El producto espera que tenga 3 valores: el codigo, el usuario que ejecuta y el valor de Activo (true/false).</param>
+        /// <returns>La respuesta de la operación.</returns>
         [OperationContract]
         ResponseDataContract ActivarPorCodigo(ProductoDC producto);
     }
