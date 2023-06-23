@@ -26,6 +26,8 @@
         <EntityTypeShape EntityType="PymexModel.Producto" Width="1.5" PointX="3" PointY="1.25" />
         <AssociationConnector Association="PymexModel.FK__Producto__Almace__5535A963" />
         <AssociationConnector Association="PymexModel.FK__Producto__Catego__5441852A" />
+        <AssociationConnector Association="PymexModel.FK__EntradaPr__Produ__3FD07829" />
+        <AssociationConnector Association="PymexModel.FK__SalidaPro__Produ__40C49C62" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

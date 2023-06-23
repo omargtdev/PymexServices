@@ -166,6 +166,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__EntradaPr__Produ__3FD07829">
+          <End Role="Producto" Type="Self.Producto" Multiplicity="1" />
+          <End Role="EntradaProducto" Type="Self.EntradaProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="ProductoID" />
+            </Principal>
+            <Dependent Role="EntradaProducto">
+              <PropertyRef Name="ProductoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__PerfilPer__Perfi__3C69FB99">
           <End Role="Perfil" Type="Self.Perfil" Multiplicity="1" />
           <End Role="PerfilPermiso" Type="Self.PerfilPermiso" Multiplicity="*" />
@@ -211,6 +223,18 @@
             </Principal>
             <Dependent Role="Producto">
               <PropertyRef Name="CategoriaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SalidaPro__Produ__40C49C62">
+          <End Role="Producto" Type="Self.Producto" Multiplicity="1" />
+          <End Role="SalidaProducto" Type="Self.SalidaProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="ProductoID" />
+            </Principal>
+            <Dependent Role="SalidaProducto">
+              <PropertyRef Name="ProductoID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -285,6 +309,10 @@
             <End Role="Entrada" EntitySet="Entrada" />
             <End Role="EntradaProducto" EntitySet="EntradaProducto" />
           </AssociationSet>
+          <AssociationSet Name="FK__EntradaPr__Produ__3FD07829" Association="Self.FK__EntradaPr__Produ__3FD07829">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="EntradaProducto" EntitySet="EntradaProducto" />
+          </AssociationSet>
           <AssociationSet Name="FK__PerfilPer__Perfi__3C69FB99" Association="Self.FK__PerfilPer__Perfi__3C69FB99">
             <End Role="Perfil" EntitySet="Perfil" />
             <End Role="PerfilPermiso" EntitySet="PerfilPermiso" />
@@ -300,6 +328,10 @@
           <AssociationSet Name="FK__Producto__Catego__5441852A" Association="Self.FK__Producto__Catego__5441852A">
             <End Role="Categoria" EntitySet="Categoria" />
             <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SalidaPro__Produ__40C49C62" Association="Self.FK__SalidaPro__Produ__40C49C62">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="SalidaProducto" EntitySet="SalidaProducto" />
           </AssociationSet>
           <AssociationSet Name="FK__SalidaPro__Salid__47A6A41B" Association="Self.FK__SalidaPro__Salid__47A6A41B">
             <End Role="Salida" EntitySet="Salida" />
@@ -366,6 +398,7 @@
           <Property Name="PrecioVentaUnidad" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
           <Property Name="Cantidad" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Entrada" Relationship="Self.FK__EntradaPr__Entra__503BEA1C" FromRole="EntradaProducto" ToRole="Entrada" />
+          <NavigationProperty Name="Producto" Relationship="PymexModel.FK__EntradaPr__Produ__3FD07829" FromRole="EntradaProducto" ToRole="Producto" />
         </EntityType>
         <EntityType Name="Salida">
           <Key>
@@ -391,6 +424,7 @@
           <Property Name="PrecioVentaUnidad" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
           <Property Name="Cantidad" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Salida" Relationship="Self.FK__SalidaPro__Salid__47A6A41B" FromRole="SalidaProducto" ToRole="Salida" />
+          <NavigationProperty Name="Producto" Relationship="PymexModel.FK__SalidaPro__Produ__40C49C62" FromRole="SalidaProducto" ToRole="Producto" />
         </EntityType>
         <EntityType Name="Cliente">
           <Key>
@@ -561,6 +595,14 @@
             <End Role="Categoria" EntitySet="Categoria" />
             <End Role="Producto" EntitySet="Producto" />
           </AssociationSet>
+          <AssociationSet Name="FK__EntradaPr__Produ__3FD07829" Association="PymexModel.FK__EntradaPr__Produ__3FD07829">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="EntradaProducto" EntitySet="EntradaProducto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SalidaPro__Produ__40C49C62" Association="PymexModel.FK__SalidaPro__Produ__40C49C62">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="SalidaProducto" EntitySet="SalidaProducto" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="usp_ObtenerResumen_Result">
           <Property Type="String" Name="Codigo" Nullable="false" MaxLength="8" />
@@ -675,6 +717,8 @@
           <Property Name="UltimoUsuarioModifico" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Almacen" Relationship="PymexModel.FK__Producto__Almace__5535A963" FromRole="Producto" ToRole="Almacen" />
           <NavigationProperty Name="Categoria" Relationship="PymexModel.FK__Producto__Catego__5441852A" FromRole="Producto" ToRole="Categoria" />
+          <NavigationProperty Name="EntradaProducto" Relationship="PymexModel.FK__EntradaPr__Produ__3FD07829" FromRole="Producto" ToRole="EntradaProducto" />
+          <NavigationProperty Name="SalidaProducto" Relationship="PymexModel.FK__SalidaPro__Produ__40C49C62" FromRole="Producto" ToRole="SalidaProducto" />
         </EntityType>
         <Association Name="FK__Producto__Almace__5535A963">
           <End Type="PymexModel.Almacen" Role="Almacen" Multiplicity="1" />
@@ -697,6 +741,30 @@
             </Principal>
             <Dependent Role="Producto">
               <PropertyRef Name="CategoriaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EntradaPr__Produ__3FD07829">
+          <End Type="PymexModel.Producto" Role="Producto" Multiplicity="1" />
+          <End Type="PymexModel.EntradaProducto" Role="EntradaProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="ProductoID" />
+            </Principal>
+            <Dependent Role="EntradaProducto">
+              <PropertyRef Name="ProductoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SalidaPro__Produ__40C49C62">
+          <End Type="PymexModel.Producto" Role="Producto" Multiplicity="1" />
+          <End Type="PymexModel.SalidaProducto" Role="SalidaProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="ProductoID" />
+            </Principal>
+            <Dependent Role="SalidaProducto">
+              <PropertyRef Name="ProductoID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
