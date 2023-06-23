@@ -1,14 +1,13 @@
 ﻿namespace Pymex.Services.Mappers.Contracts
 {
-    public interface IGenericMapper<E, DC> where E : class where DC : class
+    /// <summary>
+    ///     Interfaz para mapeos de operaciones genéricas, es decir, de una entidad a una data contractual, ya
+    ///     sea para crear, actualizar o listar.
+    /// </summary>
+    /// <typeparam name="E">El tipo que será la entidad.</typeparam>
+    /// <typeparam name="DC">El tipo que será la data contractual.</typeparam>
+    public interface IGenericMapper<E, DC> : IDataContractMapper<E, DC> where E : class where DC : class
     {
-        /// <summary>
-        ///     Recibe la entidad y lo mapea para crear una data contractual.
-        /// </summary>
-        /// <param name="entity">La entidad con los valores a mapear.</param>
-        /// <returns>La data contractual mapeada.</returns>
-        DC ToDataContract(E entity);
-
         /// <summary>
         ///     Recibe la data contractual y lo mapea para crear una entidad.
         /// </summary>

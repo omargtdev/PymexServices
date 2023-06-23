@@ -74,7 +74,7 @@ namespace Pymex.Services
             }
             catch (Exception ex)
             {
-                response.Mensaje = "Ups!. Ocurrio un error al tratar de autenticarse.";
+                response.Mensaje = "Ups! Ocurrió un error al tratar de autenticarse.";
                 // Log Exception ...
             }
 
@@ -118,7 +118,7 @@ namespace Pymex.Services
             catch (Exception ex)
             {
 
-                response.Mensaje = "Ups!. Ocurrio un error al obtener los registros.";
+                response.Mensaje = "Ups! Ocurrió un error al obtener los registros.";
                 // Log Exception ...
             }
 
