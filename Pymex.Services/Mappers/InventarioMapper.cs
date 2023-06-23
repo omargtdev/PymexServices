@@ -16,10 +16,22 @@ namespace Pymex.Services.Mappers
 
         // Inyectando dependencias
         private readonly IDataContractMapper<Producto, ProductoDC> _productoMapper;
+        private readonly IDataContractMapper<Proveedor, ProveedorDC> _proveedorMapper;
+        private readonly IDataContractMapper<Cliente, ClienteDC> _clienteMapper;
 
         public InventarioMapper(IDataContractMapper<Producto, ProductoDC> productoMapper) 
         {
             _productoMapper = productoMapper; 
+        }
+
+        public InventarioMapper(IDataContractMapper<Producto, ProductoDC> productoMapper, IDataContractMapper<Proveedor, ProveedorDC> proveedorMapper) : this(productoMapper)
+        {
+            _proveedorMapper = proveedorMapper;
+        }
+
+        public InventarioMapper(IDataContractMapper<Producto, ProductoDC> productoMapper, IDataContractMapper<Proveedor, ProveedorDC> proveedorMapper, IDataContractMapper<Cliente, ClienteDC> clienteMapper) : this(productoMapper, proveedorMapper)
+        {
+            _clienteMapper = clienteMapper;
         }
 
         public EntradaDC ToDataContract(usp_ListarEntradas_Result entity)
@@ -201,6 +213,44 @@ namespace Pymex.Services.Mappers
                 {
                     FechaRegistro = salida.SalidaFechaRegistro.Value,
                     UsuarioRegistro = salida.SalidaUsuarioRegistro,
+                    FechaModificacion = null,
+                    UltimoUsuarioModificacion = null
+                }
+            };
+        }
+
+        public EntradaDC ToEntradaWithProveedorDataContract(Entrada entrada, Proveedor proveedor)
+        {
+            return new EntradaDC
+            {
+                Id = entrada.EntradaID,
+                Codigo = entrada.Codigo,
+                FechaRegistro = entrada.FechaRegistro,
+                Proveedor = _proveedorMapper.ToDataContract(proveedor),
+                //DetalleProductos = entrada.EntradaProducto.ToList().Select(ed => ToDataContract(ed)),
+                HistorialSeguimiento = new HistorialSeguimientoDC
+                {
+                    FechaRegistro = entrada.FechaHoraRegistro,
+                    UsuarioRegistro = entrada.UsuarioRegistro,
+                    FechaModificacion = null,
+                    UltimoUsuarioModificacion = null
+                }
+            };
+        }
+
+        public SalidaDC ToSalidaWithClienteDataContract(Salida salida, Cliente cliente)
+        {
+            return new SalidaDC
+            {
+                Id = salida.SalidaID,
+                Codigo = salida.Codigo,
+                FechaRegistro = salida.FechaRegistro,
+                Cliente = _clienteMapper.ToDataContract(cliente),
+                //DetalleProductos = salida.SalidaProducto.ToList().Select(sd => ToDataContract(sd)),
+                HistorialSeguimiento = new HistorialSeguimientoDC
+                {
+                    FechaRegistro = salida.FechaHoraRegistro,
+                    UsuarioRegistro = salida.UsuarioRegistro,
                     FechaModificacion = null,
                     UltimoUsuarioModificacion = null
                 }

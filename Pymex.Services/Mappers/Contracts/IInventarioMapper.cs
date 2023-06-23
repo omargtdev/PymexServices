@@ -9,7 +9,6 @@ namespace Pymex.Services.Mappers.Contracts
             IDataContractMapper<usp_ListarSalidas_Result, SalidaDC>,
             IDataContractMapper<EntradaProducto, EntradaDetalleDC>,
             IDataContractMapper<SalidaProducto, SalidaDetalleDC>
-
     {
         /// <summary>
         ///     Convierte la lista de detalle de los productos de una entrada
@@ -44,5 +43,23 @@ namespace Pymex.Services.Mappers.Contracts
         /// <param name="detalleProductos">Los productos a utilizar para el mapeo.</param>
         /// <returns>La data contractual de salida.</returns>
         SalidaDC ToSalidaWithProductsDataContract(usp_BuscarSalidaPorCodigo_Result salida, IEnumerable<SalidaDetalleDC> detalleProductos);
+
+        /// <summary>
+        ///     Convierte la entidad de entrada y proveedor a su
+        ///     respectiva data contractual.
+        /// </summary>
+        /// <param name="entrada">La entrada a mapear.</param>
+        /// <param name="proveedor">El proveedor a mapear.</param>
+        /// <returns>La data contractual de salida.</returns>
+        EntradaDC ToEntradaWithProveedorDataContract(Entrada entrada, Proveedor proveedor);
+
+        /// <summary>
+        ///     Convierte la entidad de salida y cliente a su
+        ///     respectiva data contractual.
+        /// </summary>
+        /// <param name="salida">La salida a mapear.</param>
+        /// <param name="cliente">El cliente a mapear.</param>
+        /// <returns>La data contractual de salida.</returns>
+        SalidaDC ToSalidaWithClienteDataContract(Salida salida, Cliente cliente);
     }
 }
