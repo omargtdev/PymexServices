@@ -14,13 +14,16 @@ namespace Pymex.Services
     public class InventarioService : IInventarioService
     {
 
-        private readonly IDataContractMapper<Producto, ProductoDC> _productoMapper;
         private readonly IInventarioMapper _mapper;
 
         public InventarioService()
         {
-            _productoMapper  = new ProductoMapper();
-            _mapper = new InventarioMapper(_productoMapper);
+            _mapper = new InventarioMapper(
+                new ProductoMapper(
+                    new AlmacenMapper(),
+                    new CategoriaMapper()
+                )
+            );
         }
 
 
@@ -43,6 +46,8 @@ namespace Pymex.Services
                                             where entradaDetalle.EntradaID == entrada.EntradaID
                                             select entradaDetalle)
                                             .Include(ed => ed.Producto) // Incluyendo Producto en el detalle
+                                            .Include(ed => ed.Producto.Almacen)
+                                            .Include (ed => ed.Producto.Categoria)
                                             .ToList()
                                             .Select(ed => _mapper.ToDataContract(ed));
 
@@ -79,6 +84,8 @@ namespace Pymex.Services
                                             where salidaDetalle.SalidaID == salida.SalidaID
                                             select salidaDetalle)
                                             .Include(sd => sd.Producto) // Incluyendo Producto en el detalle
+                                            .Include(sd => sd.Producto.Almacen)
+                                            .Include (sd => sd.Producto.Categoria)
                                             .ToList()
                                             .Select(sd => _mapper.ToDataContract(sd));
 

@@ -3,11 +3,23 @@ using Pymex.Services.Mappers.Contracts;
 using Pymex.Services.Models;
 using Pymex.Services.ValueObjects;
 using System;
+using System.Runtime.InteropServices;
 
 namespace Pymex.Services.Mappers
 {
     public class ProductoMapper : IProductoMapper
     {
+
+        private readonly IDataContractMapper<Almacen, AlmacenDC> _almacenMapper;
+        private readonly IDataContractMapper<Categoria, CategoriaDC> _categoriaMapper;
+
+        public ProductoMapper(IDataContractMapper<Almacen, AlmacenDC> almacenMapper, IDataContractMapper<Categoria, CategoriaDC> categoriaMapper)
+        {
+            _almacenMapper = almacenMapper;
+            _categoriaMapper = categoriaMapper; 
+        }
+
+
         public ProductoDC ToDataContract(Producto entity)
         {
             return new ProductoDC
@@ -15,8 +27,8 @@ namespace Pymex.Services.Mappers
                 Id = entity.ProductoID,
                 Codigo = entity.Codigo,
                 Descripcion = entity.Descripcion,
-                CategoriaId = entity.CategoriaID,
-                AlmacenId = entity.AlmacenID,
+                Categoria = _categoriaMapper.ToDataContract(entity.Categoria),
+                Almacen = _almacenMapper.ToDataContract(entity.Almacen),
                 Activo = entity.Activo,
                 UltimoPrecioCompra = entity.UltimoPrecioCompra.HasValue ? (decimal)entity.UltimoPrecioCompra : 0,
                 UltimoPrecioVenta = entity.UltimoPrecioVenta.HasValue ? (decimal)entity.UltimoPrecioVenta : 0,
@@ -38,8 +50,8 @@ namespace Pymex.Services.Mappers
                 ProductoID = 0,
                 Codigo = dataContract.Codigo,
                 Descripcion = dataContract.Descripcion,
-                CategoriaID = dataContract.CategoriaId,
-                AlmacenID = dataContract.AlmacenId,
+                CategoriaID = (short)dataContract.Categoria.Id,
+                AlmacenID = (short)dataContract.Almacen.Id,
                 Stock = 0,
                 Activo = true,
                 FechaRegistro = DateTime.Now,
@@ -51,8 +63,8 @@ namespace Pymex.Services.Mappers
         {
             entity.Codigo = dataContract.Codigo;
             entity.Descripcion = dataContract.Descripcion;
-            entity.CategoriaID = dataContract.CategoriaId;
-            entity.AlmacenID = dataContract.AlmacenId;
+            entity.CategoriaID = (short)dataContract.Categoria.Id;
+            entity.AlmacenID = (short)dataContract.Almacen.Id;
             entity.UltimoUsuarioModifico = dataContract.UsuarioAccion;
             entity.FechaModificacion = DateTime.Now;
         }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Pymex.Services.Mappers;
 using Pymex.Services.Mappers.Contracts;
+using System.Data.Entity;
 
 namespace Pymex.Services
 {
@@ -12,7 +13,7 @@ namespace Pymex.Services
     public class ProductoService : IProductoService
     {
 
-        private readonly IProductoMapper _mapper = new ProductoMapper();
+        private readonly IProductoMapper _mapper = new ProductoMapper(new AlmacenMapper(), new CategoriaMapper());
 
         public ResponseDataContract Actualizar(ProductoDC dataContract)
         {
@@ -130,7 +131,10 @@ namespace Pymex.Services
                 using (PymexEntities db = new PymexEntities())
                 {
                     response.Data = (from producto in db.Producto
-                                     select producto).ToList()
+                                     select producto)
+                                     .Include(p => p.Almacen)
+                                     .Include(p => p.Categoria)
+                                     .ToList()
                                       .Select(p => _mapper.ToDataContract(p));
                 }
 
@@ -154,7 +158,10 @@ namespace Pymex.Services
             {
                 using (PymexEntities db = new PymexEntities())
                 {
-                    Producto producto = db.Producto.Where(p => p.Codigo == codigo).FirstOrDefault();
+                    Producto producto = db.Producto.Where(p => p.Codigo == codigo)
+                                        .Include(p => p.Almacen)
+                                        .Include (p => p.Categoria)
+                                        .FirstOrDefault();
                     if (producto == null)
                     {
                         response.Mensaje = "No existe el registro.";
@@ -185,7 +192,10 @@ namespace Pymex.Services
             {
                 using (PymexEntities db = new PymexEntities())
                 {
-                    Producto producto = db.Producto.Where(p => p.ProductoID == id).FirstOrDefault();
+                    Producto producto = db.Producto.Where(p => p.ProductoID == id)
+                                        .Include(p => p.Almacen)
+                                        .Include (p => p.Categoria)
+                                        .FirstOrDefault();
                     if (producto == null)
                     {
                         response.Mensaje = "No existe el registro.";
@@ -218,8 +228,11 @@ namespace Pymex.Services
                 {
                     response.Data = (from producto in db.Producto
                                      where producto.Activo == true
-                                     select producto).ToList()
-                                     .Select(p => _mapper.ToDataContract(p));
+                                     select producto)
+                                    .Include(p => p.Almacen)
+                                    .Include (p => p.Categoria)
+                                    .ToList()
+                                    .Select(p => _mapper.ToDataContract(p));
                 }
 
                 response.Mensaje = "Datos encontrados.";
@@ -227,7 +240,7 @@ namespace Pymex.Services
             }
             catch (Exception ex)
             {
-                response.Mensaje = "Ups!. Ocurrio un error al obtener los registros.";
+                response.Mensaje = "Ups! Ocurrio un error al obtener los registros.";
                 // Log Exception ...
             }
 

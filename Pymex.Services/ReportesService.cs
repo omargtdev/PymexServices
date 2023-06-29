@@ -18,15 +18,13 @@ namespace Pymex.Services
 
         private readonly IDataContractMapper<Producto, ProductoDC> _productoMapper;
         private readonly IDataContractMapper<Cliente, ClienteDC> _clienteMapper;
-        private readonly IDataContractMapper<Proveedor, ProveedorDC> _proveedorMapper;
         private readonly IInventarioMapper _inventarioMapper;
 
         public ReportesService()
         {
-            _productoMapper = new ProductoMapper();
+            _productoMapper = new ProductoMapper(new AlmacenMapper(), new CategoriaMapper());
             _clienteMapper = new ClienteMapper();
-            _proveedorMapper = new ProveedorMapper();
-            _inventarioMapper = new InventarioMapper(_productoMapper, _proveedorMapper, _clienteMapper);
+            _inventarioMapper = new InventarioMapper(_productoMapper, new ProveedorMapper(), _clienteMapper);
         }
 
         public ResponseWithDataDataContract<IEnumerable<ClienteDC>> ObtenerClientesSinNingunaCompra()
@@ -77,6 +75,8 @@ namespace Pymex.Services
                                             .FirstOrDefault()
                                             .Key) // ProductoID
                                    select producto)
+                                    .Include(p => p.Almacen)
+                                    .Include (p => p.Categoria)
                                    .FirstOrDefault();
 
                     response.Data = _productoMapper.ToDataContract(productoMasVendido);
