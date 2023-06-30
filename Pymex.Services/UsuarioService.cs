@@ -113,7 +113,7 @@ namespace Pymex.Services
             }
             catch (InsufficientPermissionsException ex)
             {
-                response.Mensaje = $"Usuario {ex.Username}: {ex.Message}";
+                response.Mensaje = $"Usuario {ex.Username}: {ex.Message}.";
             }
             catch (Exception ex)
             {

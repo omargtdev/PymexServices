@@ -81,7 +81,7 @@ namespace Pymex.Services
                     db.SaveChanges();
                 }
 
-                response.Mensaje = "Se agregó el proveedor correctamente";
+                response.Mensaje = "Se agregó el proveedor correctamente.";
                 response.EsCorrecto = true;
             }
             catch (Exception ex)
@@ -163,7 +163,7 @@ namespace Pymex.Services
                     Proveedor proveedor = db.Proveedor.Where(p => p.ProveedorID == id).FirstOrDefault();
                     if (proveedor == null)
                     {
-                        response.Mensaje = "No existe el registro.";
+                        response.Mensaje = "No existe el proveedor.";
                         return response;
                     }
 

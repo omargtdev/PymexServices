@@ -2,14 +2,10 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.Text;
 using Pymex.Services.Contracts;
 using Pymex.Services.Mappers;
 using Pymex.Services.Mappers.Contracts;
 using Pymex.Services.Models;
-using Pymex.Services.ValueObjects;
 
 namespace Pymex.Services
 {
@@ -45,7 +41,7 @@ namespace Pymex.Services
                     response.Data = clientes;
                 }
 
-                response.Mensaje = "Se obuvieron los registros.";
+                response.Mensaje = "Se obtuvieron los registros.";
                 response.EsCorrecto = true;
             }
             catch (Exception ex)
@@ -88,7 +84,7 @@ namespace Pymex.Services
             }
             catch (Exception ex)
             {
-                response.Mensaje = "Ups! Ocurrio un error al intentar obtener el producto";
+                response.Mensaje = "Ups! Ocurrió un error al intentar obtener el producto.";
             }
 
             return response;
@@ -127,7 +123,7 @@ namespace Pymex.Services
             }
             catch (Exception ex)
             {
-                response.Mensaje = "Ups! Ocurrio un error al intentar obtener las salidas";
+                response.Mensaje = "Ups! Ocurrió un error al intentar obtener las salidas.";
             }
 
             return response;

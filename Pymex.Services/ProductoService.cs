@@ -46,7 +46,7 @@ namespace Pymex.Services
                     db.SaveChanges();
                 }
 
-                response.Mensaje = "Se actualizó el producto correctamente";
+                response.Mensaje = "Se actualizó el producto correctamente.";
                 response.EsCorrecto = true;
             }
             catch (Exception ex)
@@ -79,7 +79,7 @@ namespace Pymex.Services
                     db.SaveChanges();
                 }
 
-                response.Mensaje = "Se creó el cliente correctamente!";
+                response.Mensaje = "Se creó el producto correctamente!";
                 response.EsCorrecto = true;
             }
             catch (Exception ex)

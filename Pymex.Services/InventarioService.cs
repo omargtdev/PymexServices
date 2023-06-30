@@ -176,7 +176,7 @@ namespace Pymex.Services
                 {
                     int rowsAffected = db.usp_RegistrarEntrada(entrada.FechaRegistro, entrada.UsuarioAccion, entrada.Proveedor.Id, productosXML);
                     if (rowsAffected <= 0)
-                        throw new Exception("No se registró ningún registro");
+                        throw new Exception("No se registró ningún registro.");
 
                 }
 
@@ -197,7 +197,7 @@ namespace Pymex.Services
 
             if (salida.ExistenCamposInvalidos())
             {
-                response.Mensaje = "Se tiene que completar los campos requeridos";
+                response.Mensaje = "Se tiene que completar los campos requeridos.";
                 return response;
             }
 
@@ -210,7 +210,7 @@ namespace Pymex.Services
                 {
                     int rowsAffected = db.usp_RegistrarSalida(salida.FechaRegistro, salida.UsuarioAccion, salida.Cliente.Id, productosXML);
                     if (rowsAffected <= 0)
-                        throw new Exception("No se registró ningún registro");
+                        throw new Exception("No se registró ningún registro.");
                 }
 
                 response.Mensaje = "Se registró la salida correctamente!";
@@ -218,7 +218,7 @@ namespace Pymex.Services
             }
             catch (Exception ex)
             {
-                response.Mensaje = "Ups!. Ocurrio un error al tratar de registrar.";
+                response.Mensaje = "Ups!. Ocurrió un error al tratar de registrar.";
             }
 
             return response;

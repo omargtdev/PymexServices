@@ -79,7 +79,7 @@ namespace Pymex.Services
 
                 }
 
-                response.Mensaje = "Se agregó el cliente correctamente";
+                response.Mensaje = "Se agregó el cliente correctamente.";
                 response.EsCorrecto = true;
             }
             catch (Exception ex)

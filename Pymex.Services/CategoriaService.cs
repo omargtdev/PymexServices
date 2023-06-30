@@ -162,7 +162,7 @@ namespace Pymex.Services
                     var categoria = db.Categoria.Where(c => c.CategoriaID == id).FirstOrDefault();
                     if(categoria == null)
                     {
-                        response.Mensaje = "No existe la categoría con ese id";
+                        response.Mensaje = "No existe la categoría con ese id.";
                         return response;
                     }
 
