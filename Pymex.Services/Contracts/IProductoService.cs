@@ -1,4 +1,5 @@
-﻿using Pymex.Services.ValueObjects;
+﻿using Pymex.Services.Contracts.Operations;
+using Pymex.Services.ValueObjects;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.ServiceModel;
@@ -6,7 +7,9 @@ using System.ServiceModel;
 namespace Pymex.Services.Contracts
 {
     [ServiceContract]
-    public interface IProductoService : IGenericService<ProductoDC>
+    public interface IProductoService : 
+        IGenericService<ProductoDC>,
+        IListarPorCantidadOperation<ProductoDC>
     {
         /// <summary>
         ///     Obtiene el producto por su código. 

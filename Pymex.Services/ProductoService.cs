@@ -246,5 +246,35 @@ namespace Pymex.Services
 
             return response;
         }
+
+        public ResponseWithDataDataContract<IEnumerable<ProductoDC>> ListarPorExpresionYCantidad(string expresion, int maxCantidad)
+        {
+            var response = new ResponseWithDataDataContract<IEnumerable<ProductoDC>>();
+
+            try
+            {
+                using (PymexEntities db = new PymexEntities())
+                {
+                    response.Data = (from producto in db.Producto
+                                     where producto.Descripcion.Contains(expresion) && producto.Activo
+                                     select producto)
+                                    .Include(p => p.Almacen)
+                                    .Include (p => p.Categoria)
+                                    .Take(maxCantidad)
+                                    .ToList()
+                                    .Select(p => _mapper.ToDataContract(p));
+                }
+
+                response.Mensaje = "Datos encontrados.";
+                response.EsCorrecto = true;
+            }
+            catch (Exception ex)
+            {
+                response.Mensaje = "Ups! Ocurrio un error al obtener los registros.";
+                // Log Exception ...
+            }
+
+            return response;
+        }
     }
 }

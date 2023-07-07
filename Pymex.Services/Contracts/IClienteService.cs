@@ -10,7 +10,10 @@ using System.Text;
 namespace Pymex.Services.Contracts
 {
     [ServiceContract]
-    public interface IClienteService : IGenericService<ClienteDC>, IDeleteOperation<ClienteDC>
+    public interface IClienteService : 
+        IGenericService<ClienteDC>, 
+        IDeleteOperation<ClienteDC>,
+        IListarPorCantidadOperation<ClienteDC>
     {
 
     }
