@@ -43,7 +43,7 @@ namespace Pymex.Services.Mappers
                 FechaRegistro = entity.FechaRegistro,
                 Proveedor = new ProveedorDC
                 {
-                    Id = entity.EntradaID,
+                    Id = entity.ProveedorID,
                     TipoDocumento = (TipoDocumento)entity.TipoDocumento,
                     NumeroDocumento = entity.NumeroDocumento,
                     NombreCompleto = entity.NombreCompleto,
