@@ -33,6 +33,15 @@ namespace Pymex.Services.Contracts
         /// <returns>La respuesta de la operación.</returns>
         [OperationContract]
         ResponseDataContract ActivarPorCodigo(ProductoDC producto);
+
+        /// <summary>
+        ///     Lista los productos con un stock con una cantidad determinada. 
+        /// </summary>
+        /// <param name="expresion">Descripcion a considerar.</param>
+        /// <param name="maxCantidad">Cantidad maxima a considerar.</param>
+        /// <returns>La respuesta de la operación</returns>
+        [OperationContract]
+        ResponseWithDataDataContract<IEnumerable<ProductoDC>> ListarProductosConStockPorCantidad(string descripcion, int maxCantidad);
     }
 
     [DataContract]
