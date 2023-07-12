@@ -28,7 +28,7 @@ namespace Pymex.Services.Mappers
         {
             entity.Nombre = dataContract.Nombre;
             entity.Apellidos = dataContract.Apellidos;
-            entity.PerfilID = (short)dataContract.Perfil;
         }
+
     }
 }

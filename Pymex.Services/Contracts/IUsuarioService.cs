@@ -35,9 +35,19 @@ namespace Pymex.Services.Contracts
         ///     Actualiza un usuario.
         /// </summary>
         /// <param name="usuario">El usuario con los datos a actualizar.</param>
-        /// <returns>Una respuesta contractual</returns>
+        /// <returns>Una respuesta contractual.</returns>
         [OperationContract]
         ResponseDataContract ActualizarUsuario(UsuarioDC usuario);
+
+        /// <summary>
+        ///     Actualiza el perfil/rol del usuario.
+        /// </summary>
+        /// <param name="dataContract">El usuario a buscar con el perfil a cambiar.</param>
+        /// <param name="usuarioSolicitante">El usuario (administrador) que realiza la accion.</param>
+        /// <returns>Una respuesta contractual.</returns>
+        [OperationContract]
+        ResponseDataContract CambiarPerfilUsuario(UsuarioDC dataContract, string usuarioSolicitante);
+
     }
 
     [DataContract]

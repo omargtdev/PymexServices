@@ -124,5 +124,55 @@ namespace Pymex.Services
 
             return response;
         }
+
+        public ResponseDataContract CambiarPerfilUsuario(UsuarioDC dataContract, string usuarioSolicitante)
+        {
+            var response = new ResponseDataContract();
+
+            try
+            {
+                using(PymexEntities db = new PymexEntities())
+                {
+                    // Buscamos el usuario que solicita
+                    Usuario usuario = db.Usuario.Where(u => u.UsuarioLogin == usuarioSolicitante).FirstOrDefault();
+                    if(usuario == null)
+                    {
+                        response.Mensaje = "El usuario solicitante no existe.";
+                        return response;
+                    }
+
+                    // Validamos que sea administrador
+                    if ((ValueObjects.Perfil)usuario.PerfilID != ValueObjects.Perfil.Administrador)
+                        throw new InsufficientPermissionsException("Este usuario no cuenta con permisos de administrador.", usuarioSolicitante);
+
+                    // Buscamos y actualizamos el usuario
+                    Usuario usuarioToUpdate = db.Usuario.Where(u => u.UsuarioLogin == dataContract.Login).FirstOrDefault();
+                    if(usuarioToUpdate == null)
+                    {
+                        response.Mensaje = "El usuario a actualizar no existe.";
+                        return response;
+                    }
+
+                    usuarioToUpdate.PerfilID = (short)dataContract.Perfil;
+                    db.SaveChanges();
+                }
+
+                response.Mensaje = "Se cambió el usuario correctamente.";
+                response.EsCorrecto = true;
+               
+            }
+            catch (InsufficientPermissionsException ex)
+            {
+                response.Mensaje = $"Usuario {ex.Username}: {ex.Message}.";
+            }
+            catch (Exception ex)
+            {
+
+                response.Mensaje = "Ups! Ocurrió un error al obtener los registros.";
+                // Log Exception ...
+            }
+
+            return response;
+        }
     }
 }
