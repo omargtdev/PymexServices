@@ -210,5 +210,36 @@ namespace Pymex.Services
 
             return response;
         }
+
+        public ResponseWithDataDataContract<ProveedorDC> ObtenerPorNumeroDocumento(string numeroDocumento)
+        {
+            var response = new ResponseWithDataDataContract<ProveedorDC>();
+
+            try
+            {
+                using (PymexEntities db = new PymexEntities())
+                {
+                    Proveedor proveedor = db.Proveedor.Where(p => p.NumeroDocumento == numeroDocumento).FirstOrDefault();
+                    if (proveedor == null)
+                    {
+                        response.Mensaje = "No existe el proveedor.";
+                        return response;
+                    }
+
+                    // Obteniendo datos del proveedor
+                    response.Data = _mapper.ToDataContract(proveedor);
+                }
+
+                response.Mensaje = "Dato encontrado.";
+                response.EsCorrecto = true;
+            }
+            catch (Exception ex)
+            {
+                response.Mensaje = "Ups! Ocurrió un error al obtener el registro.";
+                // Log Exception ...
+            }
+
+            return response;
+        }
     }
 }

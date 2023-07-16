@@ -13,7 +13,8 @@ namespace Pymex.Services.Contracts
     public interface IProveedorService : 
         IGenericService<ProveedorDC>, 
         IDeleteOperation<ProveedorDC>,
-        IListarPorCantidadOperation<ProveedorDC>
+        IListarPorCantidadOperation<ProveedorDC>,
+        IBuscarPorDocumentoOperation<ProveedorDC>
     {
     }
 
